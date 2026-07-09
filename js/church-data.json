@@ -1,0 +1,139 @@
+{
+  "church": {
+    "name": "The Faith Centre Global",
+    "shortName": "TFCG",
+    "tagline": "A Word of Faith, Prophetic, and Apostolic Church",
+    "description": "The Faith Centre Global (TFCG) is a Word of Faith, Prophetic, and Apostolic church based in Lagos, Nigeria, committed to raising kingdom champions through the undiluted Word of God."
+  },
+  "pastor": {
+    "name": "Pastor Godspower Opara Martins",
+    "title": "Lead Pastor",
+    "bio": "Pastor Godspower Opara Martins is an anointed teacher of the Word, operating heavily in the prophetic and apostolic offices. His ministry is characterized by deep scriptural insight, accurate prophetic declarations, and notable miracles."
+  },
+  "serviceTimes": [
+    { "name": "Sunday First Service", "time": "8:00 AM (WAT)", "day": "Sunday" },
+    { "name": "Sunday Second Service", "time": "10:30 AM (WAT)", "day": "Sunday" },
+    { "name": "Wednesday Bible Study", "time": "6:00 PM (WAT)", "day": "Wednesday" }
+  ],
+  "location": {
+    "address": "48 Funsho Kinoshi Street, Off Okiki by Jemtok, Bustop Ago Palace Way, Okota Lagos, Nigeria",
+    "city": "Lagos",
+    "country": "Nigeria"
+  },
+  "contact": {
+    "email": "tfcglobal48@gmail.com",
+    "phone": "+2348123456901",
+    "whatsapp": "https://wa.me/2348123456901",
+    "youtube": "https://www.youtube.com/@TfcglobalTV",
+    "facebook": "https://web.facebook.com/profile.php?id=61572908337081"
+  },
+  "ministries": [
+    { "name": "Youth Ministry", "description": "Empowering the next generation with the Word of Faith and raising young leaders." },
+    { "name": "Worship Ministry", "description": "Ushering the congregation into the presence of God through spirit-filled worship." },
+    { "name": "Prayer Ministry", "description": "Dedicated intercessors standing in the gap for the church, the nation, and individuals." },
+    { "name": "Outreach Ministry", "description": "Taking the gospel beyond the four walls of the church to communities and the unsaved." },
+    { "name": "Children Ministry", "description": "Building strong faith foundations early in a fun, safe, and engaging environment." },
+    { "name": "Women Ministry", "description": "Empowering women to fulfill their God-given potential as wives, mothers, and leaders." }
+  ],
+  "giving": {
+    "methods": ["Tithe", "Offering", "Special Seed", "Bank Transfer"],
+    "note": "Online payment integration is coming soon. For now, giving can be made via bank transfer or in person during service."
+  },
+  "books": {
+    "defaultAuthor": "Pastor Godspower Opara Martins",
+    "purchaseNote": "Books can be purchased by contacting the church directly on WhatsApp."
+  },
+  "livestream": {
+    "platform": "YouTube",
+    "channel": "TfcglobalTV",
+    "note": "Services are streamed live every Sunday and Wednesday. If the stream shows offline, check the service schedule."
+  },
+  "pages": {
+    "home": "index.html",
+    "about": "about.html",
+    "ministries": "ministries.html",
+    "sermons": "sermons.html",
+    "events": "events.html",
+    "books": "books.html",
+    "livestream": "livestream.html",
+    "giving": "giving.html",
+    "contact": "contact.html"
+  },
+  "faq": [
+    {
+      "keywords": ["service", "time", "when", "sunday", "wednesday", "worship time"],
+      "answer": "Our service times are Sunday First Service at 8:00 AM, Sunday Second Service at 10:30 AM, and Wednesday Bible Study at 6:00 PM, all in West Africa Time.",
+      "page": "livestream.html",
+      "linkText": "View Live Stream"
+    },
+    {
+      "keywords": ["location", "address", "where", "direction", "find you", "map"],
+      "answer": "We are located at 48 Funsho Kinoshi Street, Off Okiki by Jemtok, Bustop Ago Palace Way, Okota Lagos, Nigeria.",
+      "page": "contact.html",
+      "linkText": "Get Directions"
+    },
+    {
+      "keywords": ["pastor", "leader", "who leads", "founder"],
+      "answer": "Our Lead Pastor is Pastor Godspower Opara Martins, an anointed teacher of the Word operating in the prophetic and apostolic offices.",
+      "page": "about.html",
+      "linkText": "Meet the Pastor"
+    },
+    {
+      "keywords": ["give", "giving", "tithe", "offering", "donate", "donation", "seed"],
+      "answer": "You can give through tithes, offerings, or special seeds via bank transfer. Online payment options are coming soon.",
+      "page": "giving.html",
+      "linkText": "Giving Information"
+    },
+    {
+      "keywords": ["book", "books", "buy book", "bookstore", "read"],
+      "answer": "Visit our Books page to browse titles by Pastor Godspower Opara Martins. You can purchase directly through WhatsApp.",
+      "page": "books.html",
+      "linkText": "Visit Bookstore"
+    },
+    {
+      "keywords": ["live", "livestream", "stream", "watch online", "youtube"],
+      "answer": "You can watch our services live on YouTube. If we are not currently broadcasting, you can watch recent messages on demand.",
+      "page": "livestream.html",
+      "linkText": "Watch Live"
+    },
+    {
+      "keywords": ["prayer", "pray for me", "prayer request", "intercession"],
+      "answer": "You can submit a prayer request through our Contact page, and our intercessory team will stand in faith with you.",
+      "page": "contact.html",
+      "linkText": "Submit Prayer Request"
+    },
+    {
+      "keywords": ["ministry", "ministries", "get involved", "volunteer", "serve"],
+      "answer": "We have several ministries including Youth, Worship, Prayer, Outreach, Children, and Women Ministry. Every member is a minister.",
+      "page": "ministries.html",
+      "linkText": "Explore Ministries"
+    },
+    {
+      "keywords": ["contact", "phone", "email", "call", "reach you"],
+      "answer": "You can reach us at tfcglobal48@gmail.com or call/WhatsApp 0812 345 6901.",
+      "page": "contact.html",
+      "linkText": "Contact Us"
+    },
+    {
+      "keywords": ["event", "events", "conference", "program", "upcoming"],
+      "answer": "We host weekly services and special events such as our Annual Faith Conference and Youth Summit throughout the year.",
+      "page": "events.html",
+      "linkText": "View Events"
+    },
+    {
+      "keywords": ["sermon", "sermons", "message", "teaching", "preach"],
+      "answer": "Our sermon library features messages from Pastor Godspower Opara Martins on faith, the prophetic, and apostolic living.",
+      "page": "sermons.html",
+      "linkText": "Browse Sermons"
+    },
+    {
+      "keywords": ["about", "history", "vision", "mission", "belief", "statement of faith"],
+      "answer": "The Faith Centre Global is a Word of Faith, Prophetic, and Apostolic church committed to raising kingdom champions who walk in dominion and purpose.",
+      "page": "about.html",
+      "linkText": "Learn More About Us"
+    }
+  ],
+  "greeting": "Peace be with you. I am the TFCG Ministry Assistant. I can help you with service times, location, giving, books, livestream, prayer requests, ministries, and more. How may I assist you today?",
+  "fallback": "I do not have a specific answer for that yet. For further assistance, please contact us directly at tfcglobal48@gmail.com or 0812 345 6901.",
+  "quickReplies": ["Service Times", "Location", "Giving", "Books", "Livestream", "Contact Us"]
+}
