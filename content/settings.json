@@ -1,0 +1,12 @@
+{
+  "features": {
+    "showAnnouncementBar": true,
+    "showGallery": true,
+    "showFAQs": true,
+    "showInstallBanner": true,
+    "showAssistant": true
+  },
+  "dateFormat": "MMM D, YYYY",
+  "currency": "NGN",
+  "currencySymbol": "\u20A6"
+}

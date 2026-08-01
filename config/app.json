@@ -1,0 +1,12 @@
+{
+  "appName": "The Faith Centre Global",
+  "shortName": "TFCG",
+  "installBanner": {
+    "enabled": true,
+    "title": "Install the TFCG App",
+    "message": "Add The Faith Centre Global to your home screen for quick access to sermons, events, and live services.",
+    "installButtonLabel": "Install",
+    "dismissButtonLabel": "Not now",
+    "dismissRemembersDays": 14
+  }
+}

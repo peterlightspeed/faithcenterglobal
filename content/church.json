@@ -1,0 +1,72 @@
+{
+  "name": "The Faith Centre Global",
+  "shortName": "TFCG",
+  "tagline": "A Word of Faith, Prophetic, and Apostolic Church",
+  "foundingYear": 2021,
+  "hero": {
+    "label": "Word of Faith | Prophetic | Apostolic",
+    "title": "Welcome to The Faith Centre Global",
+    "subtitle": "The Faith Centre Global (TFCG) is a Word of Faith, Prophetic, and Apostolic-based church raising kingdom champions in Lagos, Nigeria and beyond.",
+    "primaryButtonLabel": "Join Us This Sunday",
+    "primaryButtonLink": "about.html",
+    "secondaryButtonLabel": "Watch Live",
+    "secondaryButtonLink": "livestream.html",
+    "image": "images/pastor-godspower.jpg",
+    "imageAlt": "Pastor Godspower Opara Martins ministering at The Faith Centre Global",
+    "imageCaption": "Pastor Godspower Opara Martins"
+  },
+  "stats": [
+    { "target": 300, "suffix": "+", "label": "Members" },
+    { "target": 5, "suffix": "+", "label": "Years" },
+    { "target": 2, "suffix": "+", "label": "Nations Reached" },
+    { "target": 4, "suffix": "+", "label": "Weekly Prayers" }
+  ],
+  "about": "The Faith Centre Global is a place where ordinary people develop extraordinary faith, and become the powerful leaders God created them to be. Discover your place and your destiny in God's Kingdom, as you explore your future at The Faith Centre Global.",
+  "aboutExtended": "The Faith Centre Global is a WORD OF FAITH, PROPHETIC AND APOSTOLIC based church led by Pastor Godspower Opara Martins. We are a multicultural and non-denominational church of real people seeking a meaningful life and real relationship with God. Community is our passion and we strive to live that mission by making an impact in our local community and beyond. We are building a community where everyone can belong, believe and be more.",
+  "belonging": "Whether you have a Pentecostal or Baptist background, or no church background at all, The Faith Centre Global is where you can belong.",
+  "welcomeStatement": "The Faith Centre Global is a welcoming church family bringing GOD'S GRACE, HOPE and LOVE to our community.",
+  "mandateStatement": "The Faith Centre Global is a church that's committed to demonstrating God's unconditional love to the entire world. Our mandate is to REACH, WIN, TEACH & TRAIN DISCIPLES who will serve their generation.",
+  "mandate": ["Reach", "Win", "Teach", "Train"],
+  "vision": {
+    "title": "Our Vision",
+    "icon": "bi-eye",
+    "statement": "We exist to Re-Present God to the lost and found for transformation in Christ. We are a multi-church. Meaning we are a multi-generational, multi-ethnic, multi-plying, and multi-campus."
+  },
+  "mission": {
+    "title": "Our Mandate",
+    "icon": "bi-bullseye",
+    "statement": "To demonstrate God's unconditional love to the entire world by reaching, winning, teaching, and training disciples who will serve their generation."
+  },
+  "statementOfFaith": [
+    "We believe the Bible is the inspired, infallible, and authoritative Word of God.",
+    "We believe in one God, eternally existent in three persons: Father, Son, and Holy Spirit.",
+    "We believe in the deity of our Lord Jesus Christ, His virgin birth, His sinless life, and His miracles.",
+    "We believe in His vicarious and atoning death through His shed blood, His bodily resurrection, and ascension.",
+    "We believe in the present ministry of the Holy Spirit, by whose indwelling the Christian is enabled to live a godly life.",
+    "We believe in the baptism of the Holy Spirit with the evidence of speaking in tongues.",
+    "We believe in divine healing, the prophetic ministry, and the apostolic mandate of the church.",
+    "We believe in the spiritual unity of believers in our Lord Jesus Christ."
+  ],
+  "contact": {
+    "addressLines": [
+      "48 Funsho Kinoshi Street,",
+      "Off Okiki by Jemtok Bus Stop,",
+      "Ago Palace Way, Okota,",
+      "Lagos, Nigeria"
+    ],
+    "addressSingleLine": "48 Funsho Kinoshi Street, Off Okiki by Jemtok Bus Stop, Ago Palace Way, Okota, Lagos, Nigeria",
+    "email": "tfcglobal48@gmail.com",
+    "phoneDisplay": "0812 345 6901",
+    "phoneE164": "+2348123456901",
+    "whatsappNumber": "2348123456901",
+    "mapEmbedUrl": "https://www.google.com/maps?q=48+Funsho+Kinoshi+Street%2C+Off+Okiki+by+Jemtok+Bus+Stop%2C+Ago+Palace+Way%2C+Okota%2C+Lagos%2C+Nigeria&output=embed"
+  },
+  "footer": {
+    "tagline": "The Faith Centre Global \u2014 A Word of Faith, Prophetic and Apostolic Church raising kingdom champions.",
+    "ministryStatement": "Raising kingdom champions for the advancement of God's Kingdom on earth.",
+    "copyrightYear": 2026,
+    "copyrightName": "The Faith Centre Global",
+    "credit": "Peter Lightspeed",
+    "creditUrl": "https://peterlightspeed.github.io/portfolio"
+  }
+}

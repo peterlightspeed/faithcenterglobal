@@ -1,0 +1,10 @@
+{
+  "contactForm": {
+    "provider": "formspree",
+    "endpoint": ""
+  },
+  "prayerRequest": {
+    "provider": "formspree",
+    "endpoint": ""
+  }
+}

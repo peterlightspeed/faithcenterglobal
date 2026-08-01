@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sunday-first",
+    "name": "Sunday Morning",
+    "subtitle": "First Celebration Service",
+    "day": "Sunday",
+    "time": "8:00 AM",
+    "timeWithZone": "8:00 AM (WAT)",
+    "icon": "bi-sun",
+    "featured": false
+  },
+  {
+    "id": "sunday-second",
+    "name": "Sunday Second",
+    "subtitle": "Second Celebration Service",
+    "day": "Sunday",
+    "time": "10:30 AM",
+    "timeWithZone": "10:30 AM (WAT)",
+    "icon": "bi-brightness-high",
+    "featured": true
+  },
+  {
+    "id": "wednesday",
+    "name": "Wednesday",
+    "subtitle": "Word & Bible Study",
+    "day": "Wednesday",
+    "time": "6:00 PM",
+    "timeWithZone": "6:00 PM (WAT)",
+    "icon": "bi-book",
+    "featured": false
+  }
+]

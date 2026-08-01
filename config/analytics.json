@@ -1,0 +1,10 @@
+{
+  "googleAnalytics": {
+    "enabled": false,
+    "measurementId": ""
+  },
+  "microsoftClarity": {
+    "enabled": false,
+    "projectId": ""
+  }
+}

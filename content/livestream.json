@@ -1,0 +1,10 @@
+{
+  "liveNowLabel": "We may be live right now",
+  "subscribeLabel": "Subscribe",
+  "offlineTitle": "Currently Offline?",
+  "offlineMessage": "We are not broadcasting at the moment. Please check our schedule or watch our recent messages on demand.",
+  "offlineButtonPrimaryLabel": "Get Notified",
+  "offlineButtonPrimaryLink": "contact.html",
+  "offlineButtonSecondaryLabel": "Watch Replays",
+  "offlineButtonSecondaryLink": "sermons.html"
+}

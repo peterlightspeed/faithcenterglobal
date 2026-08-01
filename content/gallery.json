@@ -1,0 +1,29 @@
+[
+  {
+    "image": "images/congregation.jpg",
+    "title": "Sunday Worship",
+    "date": "2026-07-05",
+    "caption": "Sunday worship with the TFCG congregation",
+    "description": "The congregation gathered in worship during a Sunday celebration service, hearts lifted in praise.",
+    "category": "Services",
+    "alt": "TFCG congregation gathered in worship"
+  },
+  {
+    "image": "images/pastor-godspower.jpg",
+    "title": "Ministering the Word",
+    "date": "2026-06-21",
+    "caption": "Pastor Godspower ministering the Word",
+    "description": "Pastor Godspower Opara Martins delivering a prophetic message during a Sunday service.",
+    "category": "Worship",
+    "alt": "Pastor Godspower Opara Martins preaching"
+  },
+  {
+    "image": "images/hero-bg.jpg",
+    "title": "The Sanctuary",
+    "date": "2026-05-17",
+    "caption": "The Faith Centre Global auditorium",
+    "description": "A view of The Faith Centre Global's main auditorium, prepared and ready for service.",
+    "category": "Services",
+    "alt": "The Faith Centre Global auditorium"
+  }
+]

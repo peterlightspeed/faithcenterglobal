@@ -1,0 +1,11 @@
+{
+  "paystack": {
+    "enabled": false,
+    "publicKey": "",
+    "titheLink": "",
+    "offeringLink": "",
+    "seedLink": "",
+    "buildingLink": "",
+    "missionLink": ""
+  }
+}

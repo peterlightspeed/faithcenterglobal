@@ -1,0 +1,16 @@
+{
+  "heroTitle": "Partnership in Ministry",
+  "heroVerse": "\u201CGive, and it shall be given unto you...\u201D \u2014 Luke 6:38",
+  "intro": "Your giving advances the Kingdom of God and supports the prophetic mandate of this house. We thank you for your faithful partnership in tithes, offerings, and special seeds.",
+  "methods": [
+    { "title": "Tithe", "icon": "bi-wallet2", "description": "Honoring God with the firstfruits of your increase, opening the heavens over your life and finances." },
+    { "title": "Offering", "icon": "bi-gift", "description": "A free-will gift of worship that supports the day-to-day operations and ministry work of the church." },
+    { "title": "Special Seed", "icon": "bi-stars", "description": "Prophetic giving towards special church projects, missions, and Kingdom expansion.", "featured": true }
+  ],
+  "bankDetails": {
+    "accountName": "The Faith Centre Global",
+    "bankName": "To be provided by church administration",
+    "accountNumber": "Pending"
+  },
+  "note": "In the meantime, you may give via bank transfer or in person during service."
+}
