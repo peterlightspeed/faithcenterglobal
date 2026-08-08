@@ -1,10 +1,14 @@
 {
   "contactForm": {
     "provider": "formspree",
-    "endpoint": ""
+    "endpoint": "https://formspree.io/f/xaewwdqy"
   },
   "prayerRequest": {
     "provider": "formspree",
     "endpoint": ""
+  },
+  "appointmentForm": {
+    "provider": "formspree",
+    "endpoint": "https://formspree.io/f/xaewwdqy"
   }
 }

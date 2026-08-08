@@ -1,6 +1,7 @@
 {
   "provider": "youtube",
   "channelHandle": "TfcglobalTV",
+  "channelId": "UCjxlXbR47Gg304KQH-uYFsQ",
   "embedMode": "channel",
   "videoId": "",
   "autoplay": false

@@ -2,8 +2,8 @@
   "name": "The Faith Centre Global",
   "short_name": "TFCG",
   "description": "The Faith Centre Global (TFCG) is a Word of Faith, Prophetic, and Apostolic Church in Okota, Lagos, Nigeria, led by Pastor Godspower Opara Martins.",
-  "start_url": "/faithcenterglobal/",
-  "scope": "/faithcenterglobal/",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#0d0d0d",
   "theme_color": "#0d0d0d",
@@ -22,13 +22,25 @@
       "src": "images/icons/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "images/icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "images/icons/maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "images/icons/maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

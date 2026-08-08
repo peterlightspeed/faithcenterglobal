@@ -1,32 +1,86 @@
 [
   {
     "id": "sunday-first",
-    "name": "Sunday Morning",
-    "subtitle": "First Celebration Service",
+    "name": "First Service",
+    "subtitle": "Sunday",
     "day": "Sunday",
-    "time": "8:00 AM",
-    "timeWithZone": "8:00 AM (WAT)",
+    "time": "8:00 AM \u2013 9:30 AM",
+    "timeWithZone": "8:00 AM \u2013 9:30 AM (WAT)",
     "icon": "bi-sun",
-    "featured": false
+    "frequency": "Weekly",
+    "featured": false,
+    "showInFooter": true
   },
   {
     "id": "sunday-second",
-    "name": "Sunday Second",
-    "subtitle": "Second Celebration Service",
+    "name": "Second Service",
+    "subtitle": "Sunday",
     "day": "Sunday",
-    "time": "10:30 AM",
-    "timeWithZone": "10:30 AM (WAT)",
+    "time": "9:30 AM \u2013 11:30 AM",
+    "timeWithZone": "9:30 AM \u2013 11:30 AM (WAT)",
     "icon": "bi-brightness-high",
-    "featured": true
+    "frequency": "Weekly",
+    "featured": true,
+    "showInFooter": true
   },
   {
-    "id": "wednesday",
-    "name": "Wednesday",
-    "subtitle": "Word & Bible Study",
+    "id": "tuesday-moment-of-grace",
+    "name": "Moment of Grace",
+    "subtitle": "Teaching \u00b7 Worship \u00b7 Prayer",
+    "day": "Tuesday",
+    "time": "8:00 AM \u2013 12:00 PM",
+    "timeWithZone": "8:00 AM \u2013 12:00 PM (WAT)",
+    "icon": "bi-heart",
+    "frequency": "Weekly",
+    "featured": false,
+    "showInFooter": true
+  },
+  {
+    "id": "wednesday-prayer-foyer",
+    "name": "Prayer Foyer",
+    "subtitle": "Wednesday",
     "day": "Wednesday",
-    "time": "6:00 PM",
-    "timeWithZone": "6:00 PM (WAT)",
+    "time": "Time to be announced",
+    "timeWithZone": "Time to be announced",
+    "icon": "bi-shield-check",
+    "frequency": "Weekly",
+    "featured": false,
+    "showInFooter": true
+  },
+  {
+    "id": "wednesday-midweek",
+    "name": "Midweek Service",
+    "subtitle": "Wednesday",
+    "day": "Wednesday",
+    "time": "5:45 PM",
+    "timeWithZone": "5:45 PM (WAT)",
     "icon": "bi-book",
-    "featured": false
+    "frequency": "Weekly",
+    "featured": false,
+    "showInFooter": true
+  },
+  {
+    "id": "breakthrough-service",
+    "name": "Breakthrough Service",
+    "subtitle": "Every Third Sunday",
+    "day": "Every Third Sunday",
+    "time": "5:00 PM \u2013 8:00 PM",
+    "timeWithZone": "5:00 PM \u2013 8:00 PM (WAT)",
+    "icon": "bi-stars",
+    "frequency": "Recurring Special Service \u00b7 Every 3rd Sunday",
+    "featured": true,
+    "showInFooter": false
+  },
+  {
+    "id": "spiritual-week-of-empowerment",
+    "name": "Spiritual Week of Empowerment",
+    "subtitle": "Every First Monday \u2013 Wednesday",
+    "day": "First Monday \u2013 Wednesday (Monthly)",
+    "time": "5:45 PM",
+    "timeWithZone": "5:45 PM (WAT)",
+    "icon": "bi-calendar-week",
+    "frequency": "Monthly Program",
+    "featured": false,
+    "showInFooter": false
   }
 ]
