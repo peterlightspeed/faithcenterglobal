@@ -43,6 +43,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://tfcglobal.org/appointments.html</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tfcglobal.org/giving.html</loc>
     <lastmod>2026-07-09</lastmod>
     <changefreq>monthly</changefreq>

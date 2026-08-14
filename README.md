@@ -25,6 +25,7 @@ started.
 | `events.html` | Weekly services and special events |
 | `books.html` | Bookstore with search/filter and WhatsApp checkout |
 | `media.html` | Media Centre — Photos, Videos, and News & Updates tabs |
+| `appointments.html` | Request an appointment with the pastoral team (counseling, prayer, deliverance, and more) |
 | `giving.html` | Giving methods, bank transfer details, online giving (Paystack-ready) |
 | `livestream.html` | Live service stream and schedule |
 | `contact.html` | Contact form, prayer request modal, FAQs, social links |
@@ -81,20 +82,60 @@ book, turning on an announcement, connecting Formspree, etc.):
   content is injected asynchronously.
 - `js/pwa.js` + `sw.js` power the install banner and offline app shell
   caching (see **INSTALL_APP_GUIDE.md**).
+- `js/theme.js` powers the light/dark mode toggle (see **Dark Mode**
+  below).
 - `js/assistant.js` + `js/church-data.json` power the floating Ministry
   Assistant chat widget (a separate, self-contained knowledge base — see
   below).
+
+## Dark Mode
+
+The site supports both light and dark themes, with a toggle button (sun/
+moon icon) in the navbar on every page. The visitor's choice is saved to
+`localStorage` and respected on every future visit; first-time visitors
+see whichever theme matches their operating system's preference. A tiny
+inline script at the top of every page's `<head>` applies the correct
+theme before anything paints, so there's no flash of the wrong theme.
+
+The theming system is built on CSS custom properties defined in
+`css/style.css` — semantic variables like `--bg-primary`, `--text-primary`,
+and `--card-bg` are set once for dark mode (the default) and redefined
+under `[data-theme="light"]`. Brand colors (gold, blue, red) stay
+constant across both themes; only backgrounds, text, borders, and
+shadows change. If you add new components to the site, use these
+variables instead of hardcoded colors so they stay theme-aware — see the
+"THEME SYSTEM" comment block near the top of `css/style.css` for the
+full list.
+
+## Progressive Web App (PWA)
+
+The site is installable as an app on Android, desktop Chrome/Edge, and
+(via Safari's Share menu) iOS — see **INSTALL_APP_GUIDE.md**. Installability
+depends on `site.webmanifest` being valid and its `start_url`/`scope`
+matching wherever the site is actually deployed; both are set to `"."`
+(relative to the manifest itself) so this works correctly whether the
+site ends up hosted at a domain root or a subpath, without needing to
+edit the manifest for your specific hosting setup.
+
+## Live Stream
+
+The live player automatically shows whatever is currently live on the
+church's YouTube channel — this requires the channel's **Channel ID**
+(not its `@handle`) in `config/livestream.json`. See
+**LIVESTREAM_GUIDE.md** for the full setup walkthrough.
 
 ## Project Structure
 
 ```
 ├── index.html, about.html, ...     Page templates (shared navbar/footer)
+├── appointments.html                Appointment request form (Formspree)
 ├── content/, config/                The mini-CMS (see above)
-├── css/style.css                    Design system styles (see DESIGN_SYSTEM.md)
+├── css/style.css                    Design system + light/dark theme variables (see DESIGN_SYSTEM.md)
 ├── js/content-loader.js             Fetches all JSON content/config
 ├── js/render.js                     Renders every page section from JSON
 ├── js/script.js                     Navbar, counters, filters, search
 ├── js/pwa.js                        Install banner + tutorial modal
+├── js/theme.js                      Light/dark mode toggle
 ├── js/assistant.js                  Floating Ministry Assistant widget logic
 ├── js/church-data.json              Knowledge base powering the Ministry Assistant
 ├── sw.js                            Service worker (offline app shell caching)
@@ -112,14 +153,18 @@ CMS above (so it keeps working even if a content file is temporarily
 broken). To upgrade it to a real conversational AI, see the `// TODO:
 Swap this function for a real AI API call` comment in `js/assistant.js`.
 
-## Payments, Forms & Analytics — Pending Integrations
+## Payments, Forms & Analytics — Integration Status
 
-Several features are intentionally stubbed until the church confirms
-providers — see `config/payments.json`, `config/forms.json`,
-`config/emailjs.json`, and `config/analytics.json`, each with `enabled:
-false` and empty placeholders (never fake values). Turning them on is a
-config edit, not a code change — see **CONTENT_MANAGEMENT_GUIDE.md** and
-**ROADMAP.md**.
+- **Formspree** is live for the Contact form and the Appointments form
+  (`config/forms.json` → `contactForm.endpoint` / `appointmentForm.endpoint`).
+  The Prayer Request forms don't have an endpoint configured yet.
+- **Paystack**, **EmailJS**, and **Analytics** remain intentionally
+  stubbed until the church confirms providers — see
+  `config/payments.json`, `config/emailjs.json`, and
+  `config/analytics.json`, each with `enabled: false` and empty
+  placeholders (never fake values). Turning them on is a config edit,
+  not a code change — see **CONTENT_MANAGEMENT_GUIDE.md** and
+  **ROADMAP.md**.
 
 ## Development
 

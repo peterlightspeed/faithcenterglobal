@@ -59,6 +59,10 @@ this:
    - `badge` — `"New"`, `"Bestseller"`, `"Featured"`, or `""` for none
 4. Save. Done — the new book appears on the Books page automatically.
 
+**To temporarily hide a book** (out of stock, no longer available, etc.)
+without deleting its entry, set `"published": false` on that book. Set
+it back to `true` whenever you want it to reappear.
+
 ## Adding an Event
 
 Open `content/events.json`, copy an existing entry, and change `title`,
@@ -177,9 +181,51 @@ just leave it) when the announcement is no longer relevant.
 
 ## Updating Service Times
 
-Open `content/services.json`. Change the `time` and `timeWithZone` fields
-for the service that changed. This one file updates the homepage, the
-footer on every page, and the Live Stream page schedule all at once.
+Open `content/services.json`. Change the `time` and `timeWithZone`
+fields for the service that changed. This one file updates the
+homepage, the footer on every page, and the Live Stream page schedule
+all at once.
+
+Each entry also has:
+- `frequency` — a short label shown as a badge (e.g. `"Weekly"`,
+  `"Monthly Program"`, `"Recurring Special Service · Every 3rd Sunday"`)
+- `showInFooter` — set to `false` to keep a program off the (space-
+  limited) footer while still showing it everywhere else on the site;
+  the core weekly services default to `true`
+
+To add a brand-new recurring service or program (not just change a
+time), copy an existing entry and edit `id`, `name`, `subtitle`, `day`,
+`time`, `timeWithZone`, `icon`, `frequency`, `featured`, and
+`showInFooter`.
+
+## Replacing the Church Logo
+
+The logo appears in the navbar, footer, every favicon size, PWA/app
+icons, and the site's structured data — but all of these point at the
+same two files, so replacing the logo is just swapping those files:
+
+1. **`images/tfcg_logo.png`** — the square crest mark used in the
+   navbar and footer. Should be a clean, square image (ideally with a
+   transparent background) — this is what shows at small sizes, so avoid
+   fine detail or text that won't read clearly at ~50px.
+2. **`images/tfcg_logo_full.png`** — the wider crest + wordmark version
+   used for the Open Graph share image (what shows when the site is
+   shared on social media).
+
+After replacing those two files, regenerate the favicon/app icon set
+from the new `tfcg_logo.png` (favicon 16×16, 32×32, `.ico`, Apple touch
+icon, Android 192×192/512×512, and the maskable variants in
+`images/icons/`, plus `public/favicon.svg`) — these can't simply be
+resized copies pasted in by hand without checking they still look right
+cropped to a circle/square at each size. If you're not comfortable
+generating these yourself, ask whoever maintains the site's code to
+run it through an image processing step, or use a favicon generator
+tool and place the output files at the same paths.
+
+Finally, bump the `?v=` cache-busting number at the end of every
+favicon/manifest link (search all `.html` files for `favicon.svg?v=`)
+so browsers don't keep showing the old cached icon — increase it by 1
+from whatever it currently is.
 
 ## Updating Church Information (address, phone, email, about text)
 
@@ -208,16 +254,63 @@ and rarely touch again.
 
 ## Connecting Your Forms (Formspree)
 
-The Contact form and both Prayer Request forms currently show a friendly
-"this form isn't set up yet" message instead of pretending to send.
+The Contact form and the Appointments form are already connected to a
+Formspree endpoint and will email submissions to whoever manages that
+Formspree account. The Prayer Request forms (on the homepage and the
+Contact page) currently show a friendly "this form isn't set up yet"
+message instead, since no endpoint has been configured for them yet.
 
 1. Create a free account at [formspree.io](https://formspree.io) and set
    up a form — Formspree gives you an endpoint URL like
    `https://formspree.io/f/xxxxabcd`.
 2. Open `config/forms.json`.
-3. Paste that URL into `"endpoint"` under `contactForm` (for the Contact
-   page) and/or `prayerRequest` (for both prayer forms).
+3. Paste that URL into `"endpoint"` under `contactForm` (Contact page),
+   `appointmentForm` (Appointments page), and/or `prayerRequest` (both
+   prayer forms).
 4. Save. Forms now email you their submissions — no code changes needed.
+
+You can point every form at the same Formspree endpoint (they'll all
+land in one inbox, each labeled by its `_subject` field so you can tell
+them apart) or give each its own endpoint for separate inboxes —
+whichever you prefer.
+
+## Setting Up the Live Stream
+
+The Live Stream page and homepage player are meant to automatically show
+whatever is currently live on the church's YouTube channel — no weekly
+updates needed. This requires the channel's **Channel ID** (a long
+`UC...` string), not the `@handle` you normally use to find the channel.
+YouTube's "always show what's live on this channel" embed only works
+with the Channel ID.
+
+**To find your Channel ID:**
+
+1. Go to [youtube.com/account_advanced](https://www.youtube.com/account_advanced)
+   while signed in to the church's YouTube account.
+2. Copy the "Channel ID" shown there (starts with `UC`).
+3. Open `config/livestream.json` and paste it into `"channelId"`.
+4. Save. The live player now automatically shows whatever the channel is
+   streaming, live, without any further updates.
+
+Until `channelId` is filled in, the player shows a friendly "Watch on
+YouTube" button instead of a broken embed — it upgrades automatically
+once the Channel ID is added.
+
+**A few things to know:**
+
+- The stream must be set to **Public** (not Unlisted or Private) for the
+  embed to work.
+- The embed is just the video player — it does **not** show YouTube's
+  comments or likes (those only exist on the YouTube watch page itself).
+  If people want to comment or like the stream, they can tap through to
+  YouTube directly using the "Subscribe"/"Watch on YouTube" links already
+  on the page.
+- This works exactly the same whether someone is viewing the website in
+  a browser or as the installed app (PWA) — it's the same embedded
+  player either way, no extra setup needed for the app.
+- To feature one specific past broadcast instead of "whatever is live
+  right now," set `"embedMode": "video"` and paste that video's ID into
+  `"videoId"` in `config/livestream.json`.
 
 ## Connecting Online Giving (Paystack)
 
@@ -244,6 +337,17 @@ Open `config/social.json` and paste your profile URLs. Leave any field
 blank (`""`) to hide that icon everywhere on the site.
 
 ---
+
+## Dark Mode
+
+There's nothing to configure here — the site automatically supports
+both light and dark themes, and visitors switch between them using the
+sun/moon button in the navbar. Their choice is remembered automatically.
+This isn't something you manage through content files; it's built into
+the site's design system. If you ever want to change how a color looks
+in one theme vs. the other, that's a code-level change in
+`css/style.css` — ask whoever maintains the site's code rather than
+looking for it here.
 
 ## Getting Help
 

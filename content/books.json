@@ -1,10 +1,82 @@
 [
-  { "title": "Walking in Prophetic Destiny", "author": "Pastor Godspower Opara Martins", "price": "\u20A65,000", "cover": "images/pastor-godspower.jpg", "categories": "featured", "badge": "Featured", "whatsappNumber": "2348123456901" },
-  { "title": "Apostolic Foundations", "author": "Pastor Godspower Opara Martins", "price": "\u20A64,500", "cover": "images/pastor-godspower.jpg", "categories": "bestseller faith", "badge": "Bestseller", "whatsappNumber": "2348123456901" },
-  { "title": "Commanding the Supernatural", "author": "Pastor Godspower Opara Martins", "price": "\u20A65,500", "cover": "images/pastor-godspower.jpg", "categories": "new prophetic", "badge": "New", "whatsappNumber": "2348123456901" },
-  { "title": "Faith That Moves Mountains", "author": "Pastor Godspower Opara Martins", "price": "\u20A64,000", "cover": "images/pastor-godspower.jpg", "categories": "faith", "badge": "", "whatsappNumber": "2348123456901" },
-  { "title": "Building Godly Homes", "author": "Pastor Godspower Opara Martins", "price": "\u20A64,000", "cover": "images/pastor-godspower.jpg", "categories": "new", "badge": "New", "whatsappNumber": "2348123456901" },
-  { "title": "The Believer's Authority in Prayer", "author": "Pastor Godspower Opara Martins", "price": "\u20A64,500", "cover": "images/pastor-godspower.jpg", "categories": "bestseller prophetic", "badge": "Bestseller", "whatsappNumber": "2348123456901" },
-  { "title": "The Power of the Spoken Word", "author": "Pastor Godspower Opara Martins", "price": "\u20A64,000", "cover": "images/pastor-godspower.jpg", "categories": "featured faith", "badge": "Featured", "whatsappNumber": "2348123456901" },
-  { "title": "Prophetic Encounters", "author": "Pastor Godspower Opara Martins", "price": "\u20A65,000", "cover": "images/pastor-godspower.jpg", "categories": "prophetic", "badge": "", "whatsappNumber": "2348123456901" }
+  {
+    "title": "Walking in Prophetic Destiny",
+    "published": true,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦5,000",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "featured",
+    "badge": "Featured",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "Apostolic Foundations",
+    "published": true,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦4,500",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "bestseller faith",
+    "badge": "Bestseller",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "Commanding the Supernatural",
+    "published": true,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦5,500",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "new prophetic",
+    "badge": "New",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "Faith That Moves Mountains",
+    "published": false,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦4,000",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "faith",
+    "badge": "",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "Building Godly Homes",
+    "published": false,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦4,000",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "new",
+    "badge": "New",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "The Believer's Authority in Prayer",
+    "published": true,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦4,500",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "bestseller prophetic",
+    "badge": "Bestseller",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "The Power of the Spoken Word",
+    "published": true,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦4,000",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "featured faith",
+    "badge": "Featured",
+    "whatsappNumber": "2348123456901"
+  },
+  {
+    "title": "Prophetic Encounters",
+    "published": false,
+    "author": "Pastor Godspower Opara Martins",
+    "price": "₦5,000",
+    "cover": "images/pastor-godspower.jpg",
+    "categories": "prophetic",
+    "badge": "",
+    "whatsappNumber": "2348123456901"
+  }
 ]

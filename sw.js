@@ -11,7 +11,7 @@
   Bump CACHE_VERSION whenever you change core files (css/js/html)
   so old caches are cleared automatically.
 */
-const CACHE_VERSION = "tfcg-v1";
+const CACHE_VERSION = "tfcg-v3";
 const APP_SHELL = [
   "index.html",
   "about.html",
@@ -20,6 +20,7 @@ const APP_SHELL = [
   "events.html",
   "books.html",
   "media.html",
+  "appointments.html",
   "giving.html",
   "contact.html",
   "livestream.html",
@@ -28,6 +29,8 @@ const APP_SHELL = [
   "js/content-loader.js",
   "js/render.js",
   "js/pwa.js",
+  "js/theme.js",
+  "js/hero-particles.js",
   "js/assistant.js",
   "images/tfcg_logo.png"
 ];

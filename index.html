@@ -2,6 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Theme (dark/light) is applied here, before any CSS/content loads,
+       to avoid a flash of the wrong theme. Reads a saved choice from
+       localStorage, or falls back to the visitor's OS-level preference
+       on their first visit. The toggle button (see js/theme.js) is the
+       only thing that changes this after page load. -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('tfcg-theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) { /* localStorage/matchMedia unavailable — default dark theme applies */ }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Faith Centre Global | Word of Faith, Prophetic &amp; Apostolic Church, Lagos</title>
   <meta name="description" content="The Faith Centre Global (TFCG) is a Word of Faith, Prophetic, and Apostolic Church in Okota, Lagos, Nigeria, led by Pastor Godspower Opara Martins. Join us in person or online.">
@@ -20,16 +34,16 @@
   <meta name="twitter:description" content="A Word of Faith, Prophetic, and Apostolic Church in Lagos, Nigeria.">
   <meta name="twitter:image" content="public/opengraph.jpg">
 
-  <!-- Favicons — official church logo. ?v=2 cache-busts browsers that
+  <!-- Favicons — official church logo. ?v=3 cache-busts browsers that
        aggressively cache favicons so the corrected logo shows up without
        requiring a hard refresh. Bump the version if you ever replace
        these image files again. -->
-  <link rel="icon" type="image/svg+xml" href="public/favicon.svg?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png?v=2">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png?v=2">
-    <link rel="shortcut icon" href="images/icons/favicon.ico?v=2">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png?v=2">
-    <link rel="manifest" href="site.webmanifest?v=2">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png?v=3">
+    <link rel="shortcut icon" href="images/icons/favicon.ico?v=3">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png?v=3">
+    <link rel="manifest" href="site.webmanifest?v=3">
     <meta name="theme-color" content="#0d0d0d">
   <meta name="robots" content="index, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,7 +102,13 @@
           <li class="nav-item"><a class="nav-link" href="books.html">Books</a></li>
           <li class="nav-item"><a class="nav-link" href="media.html">Media</a></li>
           <li class="nav-item"><a class="nav-link" href="giving.html">Give</a></li>
+          <li class="nav-item"><a class="nav-link" href="appointments.html">Appointments</a></li>
           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
+            <button type="button" id="themeToggle" class="theme-toggle-btn" aria-label="Switch to light mode" aria-pressed="false" title="Switch to light mode">
+              <i class="bi bi-moon-stars-fill" id="themeToggleIcon" aria-hidden="true"></i>
+            </button>
+          </li>
           <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
             <a class="btn btn-watch-live" href="livestream.html">
               <span class="live-dot" aria-hidden="true"></span> Watch Live
@@ -102,6 +122,7 @@
   <main id="main-content">
 
   <section class="hero-section">
+    <canvas id="hero-particles" class="hero-particles-canvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="row align-items-center g-5">
         <div class="col-lg-7" data-aos="fade-right">
@@ -185,7 +206,7 @@
         <div class="col-lg-8">
           <div class="ratio ratio-16x9 iframe-card">
             <!-- Embed source is set by js/render.js from config/livestream.json -->
-            <iframe id="home-livestream-iframe" src="https://www.youtube.com/embed/live_stream?channel=TfcglobalTV&autoplay=0" title="The Faith Centre Global live stream" allowfullscreen loading="lazy"></iframe>
+            <iframe id="home-livestream-iframe" src="" title="The Faith Centre Global live stream" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
       </div>
@@ -214,18 +235,20 @@
           <div class="glass-card text-start">
             <!-- TODO: Wire this form up to a backend or email service (Formspree, EmailJS) for real submissions -->
             <form id="prayerForm" data-validate>
+              <input type="hidden" name="_subject" value="New Prayer Request — TFCG Website">
+              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label" for="prayerName">Full Name</label>
-                  <input type="text" id="prayerName" class="form-control" required>
+                  <input type="text" id="prayerName" name="name" class="form-control" required>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" for="prayerEmail">Email Address</label>
-                  <input type="email" id="prayerEmail" class="form-control" required>
+                  <input type="email" id="prayerEmail" name="email" class="form-control" required>
                 </div>
                 <div class="col-12">
                   <label class="form-label" for="prayerRequest">Prayer Request</label>
-                  <textarea id="prayerRequest" class="form-control" rows="4" required></textarea>
+                  <textarea id="prayerRequest" name="message" class="form-control" rows="4" required></textarea>
                 </div>
                 <div class="col-12 text-center mt-4">
                   <button type="submit" class="btn btn-primary px-5">Submit Request</button>
@@ -264,15 +287,18 @@
             <li><a href="books.html">Books</a></li>
             <li><a href="media.html">Media</a></li>
             <li><a href="giving.html">Give</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
         <div class="col-lg-3 col-md-6">
           <h2 class="footer-heading h5">Service Times</h2>
           <ul class="footer-service-times" id="footer-service-times">
-            <li><strong>Sunday Morning</strong><br>8:00 AM (WAT)</li>
-            <li><strong>Sunday Second</strong><br>10:30 AM (WAT)</li>
-            <li><strong>Wednesday Bible Study</strong><br>6:00 PM (WAT)</li>
+            <li><strong>First Service</strong> <span class="text-secondary small">(Sunday)</span><br>8:00 AM – 9:30 AM (WAT)</li>
+            <li><strong>Second Service</strong> <span class="text-secondary small">(Sunday)</span><br>9:30 AM – 11:30 AM (WAT)</li>
+            <li><strong>Moment of Grace</strong> <span class="text-secondary small">(Tuesday)</span><br>8:00 AM – 12:00 PM (WAT)</li>
+            <li><strong>Prayer Foyer</strong> <span class="text-secondary small">(Wednesday)</span><br>Time to be announced</li>
+            <li><strong>Midweek Service</strong> <span class="text-secondary small">(Wednesday)</span><br>5:45 PM (WAT)</li>
           </ul>
         </div>
         <div class="col-lg-3 col-md-6">
@@ -306,6 +332,8 @@
   <script src="js/render.js"></script>
   <script src="js/script.js"></script>
   <script src="js/pwa.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/hero-particles.js"></script>
   <script src="js/assistant.js" defer></script>
 </body>
 </html>

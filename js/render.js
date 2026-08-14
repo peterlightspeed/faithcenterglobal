@@ -32,8 +32,13 @@
 
   function renderBooks() {
     const grid = $("books-grid");
-    const books = window.TFCG_CONTENT.books;
-    if (!grid || !books) return;
+    const allBooks = window.TFCG_CONTENT.books;
+    if (!grid || !allBooks) return;
+
+    /* Books with "published": false stay in the JSON file (so nothing
+       is lost) but are skipped here — the JSON-CMS equivalent of
+       "commenting out" a book. Set "published": true to bring one back. */
+    const books = allBooks.filter((b) => b.published !== false);
 
     grid.innerHTML = books.map((book, index) => {
       const badgeClass = book.badge === "Bestseller" ? "bestseller" : (book.badge === "New" ? "new" : "");
@@ -193,12 +198,14 @@
     if (!grid || !services) return;
 
     grid.innerHTML = services.map((s, index) => `
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${(index + 1) * 100}">
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${(index % 6 + 1) * 100}">
         <div class="glass-card text-center p-5${s.featured ? " border-gold" : ""}">
+          ${s.frequency ? `<span class="service-frequency-badge">${escapeHtml(s.frequency)}</span>` : ""}
           <i class="bi ${escapeHtml(s.icon)}" aria-hidden="true"></i>
           <h3 class="h4 heading-font text-white mt-3">${escapeHtml(s.name)}</h3>
+          <p class="text-gold small text-uppercase letter-spacing-1 mb-2">${escapeHtml(s.day || "")}</p>
           <p class="display-6 fw-bold text-light my-3">${escapeHtml(s.time)}</p>
-          <p class="text-secondary small">${escapeHtml(s.subtitle)}</p>
+          <p class="text-secondary small mb-0">${escapeHtml(s.subtitle)}</p>
         </div>
       </div>
     `).join("");
@@ -209,7 +216,8 @@
     const services = window.TFCG_CONTENT.services;
     if (!list || !services) return;
 
-    list.innerHTML = services.map((s) => `<li><strong>${escapeHtml(s.name)}</strong><br>${escapeHtml(s.timeWithZone)}</li>`).join("");
+    const footerServices = services.filter((s) => s.showInFooter !== false);
+    list.innerHTML = footerServices.map((s) => `<li><strong>${escapeHtml(s.name)}</strong> <span class="text-secondary small">(${escapeHtml(s.day)})</span><br>${escapeHtml(s.timeWithZone)}</li>`).join("");
   }
 
   function renderStats() {
@@ -522,16 +530,47 @@
   /* Livestream page                                              */
   /* ---------------------------------------------------------- */
 
+  function getLivestreamEmbedSrc(config) {
+    if (config.embedMode === "video" && config.videoId) {
+      return `https://www.youtube.com/embed/${config.videoId}${config.autoplay ? "?autoplay=1" : ""}`;
+    }
+    /* IMPORTANT: YouTube's "always show whatever is live on this
+       channel" embed only works with the channel's Channel ID (a
+       "UC..." string) — the @handle does NOT work here, even though
+       it works almost everywhere else on YouTube. See
+       CONTENT_MANAGEMENT_GUIDE.md → "Setting Up the Live Stream". */
+    if (config.channelId) {
+      return `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId)}${config.autoplay ? "&autoplay=1" : ""}`;
+    }
+    return null;
+  }
+
   function renderLivestream() {
     const content = window.TFCG_CONTENT.livestream;
     const config = window.TFCG_CONFIG.livestream;
 
     const iframe = $("livestream-iframe") || $("home-livestream-iframe");
     if (iframe && config) {
-      const src = (config.embedMode === "video" && config.videoId)
-        ? `https://www.youtube.com/embed/${config.videoId}`
-        : `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelHandle || "TfcglobalTV")}${config.autoplay ? "&autoplay=1" : ""}`;
-      iframe.src = src;
+      const src = getLivestreamEmbedSrc(config);
+      if (src) {
+        iframe.src = src;
+      } else {
+        /* No Channel ID configured yet — show a friendly fallback
+           instead of a broken/blank embed. Upgrades automatically once
+           config/livestream.json → channelId is filled in. */
+        const wrap = iframe.closest(".ratio");
+        if (wrap) {
+          wrap.classList.remove("ratio-16x9");
+          const handle = config.channelHandle || "";
+          wrap.innerHTML = `
+            <div class="d-flex flex-column align-items-center justify-content-center text-center p-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-card); min-height: 280px;">
+              <i class="bi bi-youtube fs-1 text-gold mb-3" aria-hidden="true"></i>
+              <p class="text-secondary mb-3">The live embed isn't fully set up yet.</p>
+              ${handle ? `<a href="https://www.youtube.com/@${escapeHtml(handle)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-sm">Watch on YouTube</a>` : ""}
+            </div>
+          `;
+        }
+      }
     }
 
     if (!content) return;
@@ -546,8 +585,8 @@
     const services = window.TFCG_CONTENT.services;
     if (scheduleList && services) {
       scheduleList.innerHTML = services.map((s) => `
-        <li class="mb-3 d-flex justify-content-between align-items-center">
-          <span class="text-white fw-medium">${escapeHtml(s.name)} ${escapeHtml(s.subtitle.includes("Service") ? "" : "")}</span>
+        <li class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-1">
+          <span class="text-white fw-medium">${escapeHtml(s.name)} <span class="text-secondary small">(${escapeHtml(s.day)})</span></span>
           <span class="text-gold">${escapeHtml(s.timeWithZone)}</span>
         </li>
       `).join("");
@@ -767,6 +806,12 @@
     wireForm($("prayerForm"), "prayerRequest");
     wireForm($("modalPrayerForm"), "prayerRequest");
     wireForm($("contactForm"), "contactForm");
+    wireForm($("appointmentForm"), "appointmentForm");
+
+    const apptDate = $("apptDate");
+    if (apptDate && !apptDate.min) {
+      apptDate.min = new Date().toISOString().split("T")[0];
+    }
   }
 
   /* ---------------------------------------------------------- */

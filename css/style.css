@@ -43,6 +43,80 @@
   --scroll-size: 46px;
   --assistant-size: 56px;
   --install-banner-height: 0px;
+
+  /* ------------------------------------------------------------
+     THEME SYSTEM — semantic variables used throughout the file
+     for anything that should flip between light and dark mode.
+     Defaults here are the (dark) values the site always used.
+     Light-mode values are redefined under [data-theme="light"]
+     near the top of this file. Brand colors above (gold, blue,
+     red) stay constant in both themes — only backgrounds, text,
+     borders, and shadows change.
+     ------------------------------------------------------------ */
+  --bg-primary: var(--tfcg-dark);
+  --bg-secondary: var(--tfcg-dark-2);
+  --bg-tertiary: var(--tfcg-dark-3);
+  --text-primary: var(--tfcg-white);
+  --text-secondary: var(--tfcg-gray);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-subtle-strong: rgba(255, 255, 255, 0.12);
+  --border-faint: rgba(255, 255, 255, 0.06);
+  --overlay-faint: rgba(255, 255, 255, 0.04);
+  --overlay-soft: rgba(255, 255, 255, 0.03);
+  --overlay-medium: rgba(255, 255, 255, 0.05);
+  --overlay-strong: rgba(255, 255, 255, 0.1);
+  --navbar-bg-scrolled: rgba(10, 13, 26, 0.97);
+  --navbar-bg-top: transparent;
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.15);
+  --shadow-color-soft: rgba(0, 0, 0, 0.35);
+  --shadow-color-strong: rgba(0, 0, 0, 0.6);
+  --modal-bg: rgba(10, 13, 26, 0.97);
+  --card-bg: rgba(26, 58, 143, 0.09);
+  --bg-footer: #05070e;
+  --nav-link-color: rgba(240, 244, 255, 0.88);
+  --tfcg-gold-text: var(--tfcg-gold);
+  --code-icon-filter: none;
+}
+
+/* ------------------------------------------------------------
+   LIGHT MODE — a deliberately distinct, professional palette
+   (not an inversion). Warm off-white surfaces, deep navy text,
+   the same gold/blue/red brand accents, softer shadows.
+   ------------------------------------------------------------ */
+[data-theme="light"] {
+  --bg-primary: #f7f5f0;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0ede4;
+  --text-primary: #14182b;
+  --text-secondary: #5a6478;
+  --tfcg-gray: #5a6478;
+  --tfcg-silver: #4a5568;
+  --border-subtle: rgba(20, 24, 43, 0.1);
+  --border-subtle-strong: rgba(20, 24, 43, 0.16);
+  --border-faint: rgba(20, 24, 43, 0.08);
+  --overlay-faint: rgba(20, 24, 43, 0.04);
+  --overlay-soft: rgba(20, 24, 43, 0.03);
+  --overlay-medium: rgba(20, 24, 43, 0.05);
+  --overlay-strong: rgba(20, 24, 43, 0.08);
+  --navbar-bg-scrolled: rgba(255, 255, 255, 0.94);
+  --navbar-bg-top: transparent;
+  --input-bg: #ffffff;
+  --input-border: rgba(20, 24, 43, 0.16);
+  --shadow-color-soft: rgba(20, 24, 43, 0.1);
+  --shadow-color-strong: rgba(20, 24, 43, 0.18);
+  --shadow-card: 0 8px 32px rgba(20, 24, 43, 0.08);
+  --shadow-hover: 0 16px 48px rgba(26, 58, 143, 0.14);
+  --modal-bg: rgba(255, 255, 255, 0.98);
+  --card-bg: rgba(26, 58, 143, 0.05);
+  --bg-footer: #eeece3;
+  --nav-link-color: rgba(20, 24, 43, 0.82);
+  /* Regular gold (#d4a017) fails WCAG AA as small text on our light
+     background (~2.2:1). This deepened shade keeps the same gold hue
+     family but passes AA (5:1) for gold text in light mode. Gold used
+     as a background/border/decorative accent is unaffected — only
+     `--tfcg-gold-text` (used for readable gold text) changes. */
+  --tfcg-gold-text: #8a6108;
 }
 
 /* ============================================================
@@ -60,27 +134,42 @@ html {
 }
 
 body {
-  background-color: var(--tfcg-dark);
-  color: var(--tfcg-white);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-body);
   line-height: 1.7;
+  transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
 }
 
 h1 { font-family: var(--font-display); }
 h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
 
+/* Bootstrap's .text-white utility is used throughout the site (card
+   titles, form labels, section headings) for text sitting on
+   theme-aware backgrounds — never for text that must stay literally
+   white regardless of theme. Overriding it here (after Bootstrap loads)
+   makes all of those uses theme-aware in one place; --text-primary
+   equals near-white in dark mode already, so this changes nothing
+   there and only fixes the light-mode invisibility. Anything that
+   genuinely needs to stay pure white (e.g. text on a permanently-dark
+   hero or a colored button) uses a literal `color: #fff` elsewhere in
+   this stylesheet instead of this Bootstrap utility class. */
+.text-white {
+  color: var(--text-primary) !important;
+}
+
 .display-font { font-family: var(--font-display); }
 .heading-font { font-family: var(--font-heading); }
 
 a {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   text-decoration: none;
   transition: color var(--transition-base);
 }
 
 a:hover {
-  color: var(--tfcg-gold-light);
+  color: var(--tfcg-gold-text);
 }
 
 img {
@@ -104,12 +193,12 @@ img {
 /* ============================================================
    UTILITY CLASSES
    ============================================================ */
-.text-gold { color: var(--tfcg-gold) !important; }
-.text-gold-light { color: var(--tfcg-gold-light) !important; }
+.text-gold { color: var(--tfcg-gold-text) !important; }
+.text-gold-light { color: var(--tfcg-gold-text) !important; }
 .text-silver { color: var(--tfcg-silver) !important; }
-.bg-gold { background-color: var(--tfcg-gold) !important; }
+.bg-gold { background-color: var(--tfcg-gold-text) !important; }
 .bg-blue-dark { background-color: var(--tfcg-blue-dark) !important; }
-.border-gold { border-color: var(--tfcg-gold) !important; }
+.border-gold { border-color: var(--tfcg-gold-text) !important; }
 
 .letter-spacing-1 { letter-spacing: 1px; }
 .letter-spacing-2 { letter-spacing: 2px; }
@@ -125,7 +214,7 @@ img {
 }
 
 .navbar.scrolled {
-  background: rgba(10, 13, 26, 0.97);
+  background: var(--navbar-bg-scrolled);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   padding: 0.6rem 0;
@@ -145,7 +234,17 @@ img {
   transform: scale(1.04);
 }
 
+.navbar-nav,
+.navbar-nav .nav-item {
+  list-style: none;
+}
+
 .navbar-dark .navbar-nav .nav-link {
+  /* The navbar is transparent until scrolled, sitting directly over
+     this page's permanently-dark hero/page-hero photo background —
+     true in BOTH themes. So nav links stay light/bright here always;
+     see `.navbar.scrolled` below for the theme-aware version used once
+     the navbar has its own solid, theme-matching background. */
   color: rgba(240, 244, 255, 0.88);
   font-weight: 500;
   font-size: 0.88rem;
@@ -174,6 +273,21 @@ img {
   color: var(--tfcg-gold);
 }
 
+.navbar-dark .navbar.scrolled .navbar-nav .nav-link {
+  /* Once scrolled, the navbar has its own solid, theme-matching
+     background (--navbar-bg-scrolled), so links can safely follow the
+     page theme instead of staying pinned to the hero-photo treatment.
+     NOTE: .navbar-dark lives on <body>, an ANCESTOR of <nav
+     class="navbar scrolled">, not a descendant — this selector order
+     matters, the reverse never matches. */
+  color: var(--nav-link-color);
+}
+
+.navbar-dark .navbar.scrolled .navbar-nav .nav-link:hover,
+.navbar-dark .navbar.scrolled .navbar-nav .nav-link.active {
+  color: var(--tfcg-gold-text);
+}
+
 .navbar-dark .navbar-nav .nav-link:hover::after,
 .navbar-dark .navbar-nav .nav-link.active::after {
   transform: scaleX(1);
@@ -181,7 +295,7 @@ img {
 
 .navbar-toggler {
   border-color: rgba(212, 160, 23, 0.5);
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   padding: 0.4rem 0.6rem;
 }
 
@@ -195,7 +309,7 @@ img {
 
 @media (max-width: 991.98px) {
   .navbar-collapse {
-    background: rgba(10, 13, 26, 0.98);
+    background: var(--navbar-bg-scrolled);
     backdrop-filter: blur(20px);
     border-radius: 0 0 var(--radius-card) var(--radius-card);
     border: 1px solid rgba(212, 160, 23, 0.15);
@@ -209,12 +323,18 @@ img {
   }
 
   .navbar-dark .navbar-nav .nav-link {
+    /* Unlike the transparent desktop navbar (which sits over the dark
+       hero photo until scrolled), the mobile dropdown always has its
+       own solid, theme-matching background — so links should always
+       follow the page theme here, not the "stay light" hero treatment. */
+    color: var(--nav-link-color);
     padding: 0.65rem 0.75rem;
     border-radius: 6px;
   }
 
   .navbar-dark .navbar-nav .nav-link:hover,
   .navbar-dark .navbar-nav .nav-link.active {
+    color: var(--tfcg-gold-text);
     background: rgba(212, 160, 23, 0.08);
   }
 }
@@ -225,7 +345,7 @@ img {
 .btn-watch-live {
   background: rgba(212, 160, 23, 0.1);
   border: 1px solid var(--tfcg-gold);
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   border-radius: var(--radius-pill);
   padding: 0.45rem 1.2rem;
   display: inline-flex;
@@ -240,7 +360,7 @@ img {
 
 .btn-watch-live:hover {
   background: rgba(212, 160, 23, 0.22);
-  color: var(--tfcg-gold-light);
+  color: var(--tfcg-gold-text);
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(212, 160, 23, 0.2);
 }
@@ -276,7 +396,7 @@ img {
 .btn-primary {
   background-color: var(--tfcg-blue);
   border: 1px solid var(--tfcg-blue);
-  color: var(--tfcg-white);
+  color: #fff;
   padding: 0.72rem 1.6rem;
 }
 
@@ -284,7 +404,7 @@ img {
 .btn-primary:focus {
   background-color: var(--tfcg-blue-light);
   border-color: var(--tfcg-blue-light);
-  color: var(--tfcg-white);
+  color: #fff;
   box-shadow: 0 4px 20px rgba(36, 81, 199, 0.45);
   transform: translateY(-2px);
 }
@@ -296,14 +416,14 @@ img {
 .btn-outline-gold {
   background-color: transparent;
   border: 1px solid var(--tfcg-gold);
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   padding: 0.72rem 1.6rem;
 }
 
 .btn-outline-gold:hover,
 .btn-outline-gold:focus {
-  background-color: var(--tfcg-gold);
-  border-color: var(--tfcg-gold);
+  background-color: var(--tfcg-gold-text);
+  border-color: var(--tfcg-gold-text);
   color: var(--tfcg-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(212, 160, 23, 0.35);
@@ -314,7 +434,7 @@ img {
 }
 
 .btn-gold {
-  background-color: var(--tfcg-gold);
+  background-color: var(--tfcg-gold-text);
   border: 1px solid var(--tfcg-gold);
   color: var(--tfcg-dark);
   padding: 0.72rem 1.6rem;
@@ -322,8 +442,8 @@ img {
 
 .btn-gold:hover,
 .btn-gold:focus {
-  background-color: var(--tfcg-gold-light);
-  border-color: var(--tfcg-gold-light);
+  background-color: var(--tfcg-gold-text);
+  border-color: var(--tfcg-gold-text);
   color: var(--tfcg-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
@@ -347,6 +467,7 @@ img {
   display: flex;
   align-items: center;
   position: relative;
+  color: #fff;
   background:
     linear-gradient(to right, rgba(10, 13, 26, 0.92) 0%, rgba(10, 13, 26, 0.55) 60%, rgba(13, 31, 79, 0.4) 100%),
     url('../images/hero-bg.jpg') center / cover no-repeat;
@@ -368,13 +489,22 @@ img {
   left: 0;
   right: 0;
   height: 120px;
-  background: linear-gradient(to top, var(--tfcg-dark), transparent);
+  background: linear-gradient(to top, var(--bg-primary), transparent);
   z-index: 0;
 }
 
 .hero-section .container {
   position: relative;
   z-index: 1;
+}
+
+.hero-particles-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hero-label {
@@ -418,6 +548,7 @@ img {
   justify-content: center;
   text-align: center;
   position: relative;
+  color: #fff;
   background:
     linear-gradient(rgba(10, 13, 26, 0.82), rgba(10, 13, 26, 0.92)),
     url('../images/congregation.jpg') center / cover no-repeat;
@@ -432,7 +563,7 @@ img {
 }
 
 .page-hero p {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   font-size: 1.1rem;
   margin-top: 0.75rem;
   margin-bottom: 0;
@@ -452,7 +583,7 @@ img {
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 20px 20px 200px 200px;
-  background: linear-gradient(145deg, var(--tfcg-blue-dark), var(--tfcg-dark-2));
+  background: linear-gradient(145deg, var(--tfcg-blue-dark), var(--bg-secondary));
   border: 2px solid rgba(212, 160, 23, 0.3);
   box-shadow:
     0 0 50px rgba(26, 58, 143, 0.5),
@@ -494,7 +625,7 @@ img {
    GLASSMORPHISM CARDS
    ============================================================ */
 .glass-card {
-  background: rgba(26, 58, 143, 0.09);
+  background: var(--card-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(212, 160, 23, 0.18);
@@ -532,7 +663,7 @@ img {
 .glass-card i.text-gold,
 .glass-card > i {
   font-size: 2.4rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   margin-bottom: 1.25rem;
   display: block;
 }
@@ -579,19 +710,19 @@ section {
 }
 
 .section-dark-2 {
-  background-color: var(--tfcg-dark-2);
+  background-color: var(--bg-secondary);
 }
 
 .section-dark-3 {
-  background-color: var(--tfcg-dark-3);
+  background-color: var(--bg-tertiary);
 }
 
 .section-blue-grad {
-  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--tfcg-dark-3));
+  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--bg-tertiary));
 }
 
 .section-label {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -603,13 +734,13 @@ section {
 .section-title {
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   margin-bottom: 1.5rem;
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   line-height: 1.25;
 }
 
 .section-subtitle {
   font-size: 1.08rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   max-width: 640px;
   margin: 0 auto 2.5rem;
   line-height: 1.7;
@@ -632,7 +763,7 @@ section {
    STATS STRIP
    ============================================================ */
 .stats-strip {
-  background: linear-gradient(90deg, var(--tfcg-dark-2), var(--tfcg-blue-dark), var(--tfcg-dark-2));
+  background: linear-gradient(90deg, var(--bg-secondary), var(--tfcg-blue-dark), var(--bg-secondary));
   padding: 3.5rem 0;
   border-top: 1px solid rgba(212, 160, 23, 0.2);
   border-bottom: 1px solid rgba(212, 160, 23, 0.2);
@@ -645,7 +776,7 @@ section {
 .stat-number {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 4vw, 3.2rem);
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-weight: 700;
   line-height: 1;
   margin-bottom: 0.5rem;
@@ -655,7 +786,7 @@ section {
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-size: 0.82rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
 }
 
 /* ============================================================
@@ -684,14 +815,14 @@ section {
 
 .testimonial-author {
   font-family: var(--font-heading);
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-size: 1.1rem;
   margin-bottom: 0.2rem;
 }
 
 .testimonial-title {
   font-size: 0.85rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -707,7 +838,7 @@ section {
   justify-content: center;
   margin: 0 auto 1rem;
   font-size: 1.4rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
 }
 
 /* ============================================================
@@ -733,7 +864,7 @@ section {
 .sermon-card-thumb {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--tfcg-dark-2));
+  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--bg-secondary));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -742,13 +873,13 @@ section {
 
 .sermon-card-thumb .play-icon {
   font-size: 3rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   transition: transform var(--transition-base), color var(--transition-base);
 }
 
 .sermon-card:hover .play-icon {
   transform: scale(1.15);
-  color: var(--tfcg-gold-light);
+  color: var(--tfcg-gold-text);
 }
 
 .sermon-card-thumb .sermon-category {
@@ -756,7 +887,7 @@ section {
   top: 12px;
   left: 12px;
   background: var(--tfcg-blue);
-  color: var(--tfcg-white);
+  color: #fff;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 1px;
@@ -773,7 +904,7 @@ section {
 }
 
 .sermon-card-body h4 {
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   line-height: 1.4;
@@ -781,13 +912,13 @@ section {
 
 .sermon-meta {
   font-size: 0.82rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   margin-bottom: 1rem;
   flex-grow: 1;
 }
 
 .sermon-meta .scripture {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-weight: 500;
 }
 
@@ -814,7 +945,7 @@ section {
 .book-cover-wrap {
   position: relative;
   aspect-ratio: 3 / 4;
-  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--tfcg-dark-3));
+  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--bg-tertiary));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -839,7 +970,7 @@ section {
 
 .book-cover-placeholder i {
   font-size: 4rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   opacity: 0.5;
   margin-bottom: 0.75rem;
   display: block;
@@ -848,7 +979,7 @@ section {
 .book-cover-placeholder span {
   font-family: var(--font-display);
   font-size: 1rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
 }
 
 .book-badge {
@@ -873,7 +1004,7 @@ section {
 }
 
 .book-card-body h4 {
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   font-size: 1.05rem;
   margin-bottom: 0.35rem;
   line-height: 1.4;
@@ -881,7 +1012,7 @@ section {
 
 .book-author {
   font-size: 0.82rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
@@ -889,14 +1020,14 @@ section {
 .book-price {
   font-family: var(--font-display);
   font-size: 1.3rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
 
 .book-desc {
   font-size: 0.88rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   flex-grow: 1;
   margin-bottom: 1.25rem;
   line-height: 1.6;
@@ -934,7 +1065,7 @@ section {
 }
 
 .event-date-block.gold-block {
-  background-color: var(--tfcg-gold);
+  background-color: var(--tfcg-gold-text);
 }
 
 .event-date-block.gold-block .event-month,
@@ -947,14 +1078,14 @@ section {
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
 }
 
 .event-day {
   font-family: var(--font-display);
   font-size: 2.8rem;
   font-weight: 700;
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   line-height: 1;
 }
 
@@ -1017,13 +1148,13 @@ section {
   justify-content: center;
   margin: 0 auto 1.5rem;
   font-size: 1.8rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   transition: all var(--transition-base);
 }
 
 .ministry-card:hover .ministry-icon {
   background: linear-gradient(135deg, rgba(212, 160, 23, 0.2), rgba(212, 160, 23, 0.05));
-  border-color: var(--tfcg-gold);
+  border-color: var(--tfcg-gold-text);
   transform: scale(1.1) rotate(5deg);
 }
 
@@ -1055,7 +1186,7 @@ section {
   display: flex;
   align-items: center;
   padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-faint);
 }
 
 .bank-detail-row:last-child {
@@ -1063,27 +1194,27 @@ section {
 }
 
 .bank-detail-label {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   font-size: 0.88rem;
   min-width: 140px;
   flex-shrink: 0;
 }
 
 .bank-detail-value {
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .bank-account-number {
   font-family: var(--font-display);
   font-size: 1.5rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   letter-spacing: 3px;
 }
 
 .map-embed-wrap {
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--overlay-soft);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   overflow: hidden;
   filter: grayscale(0.15) contrast(1.05);
@@ -1096,7 +1227,7 @@ section {
 }
 
 .tfcg-modal {
-  background-color: var(--tfcg-dark-2);
+  background-color: var(--bg-secondary);
   border: 1px solid var(--tfcg-gold);
   border-radius: var(--radius-lg);
 }
@@ -1106,9 +1237,9 @@ section {
    ============================================================ */
 .form-control,
 .form-select {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--tfcg-white);
+  background-color: var(--overlay-medium);
+  border: 1px solid var(--border-subtle-strong);
+  color: var(--text-primary);
   padding: 0.75rem 1rem;
   border-radius: 6px;
   transition: all var(--transition-base);
@@ -1120,15 +1251,15 @@ section {
 
 .form-control:focus,
 .form-select:focus {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: var(--tfcg-gold);
-  color: var(--tfcg-white);
+  background-color: var(--border-subtle);
+  border-color: var(--tfcg-gold-text);
+  color: var(--text-primary);
   box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.18);
 }
 
 .form-select option {
-  background-color: var(--tfcg-dark-2);
-  color: var(--tfcg-white);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .form-label {
@@ -1163,7 +1294,7 @@ section {
    FOOTER
    ============================================================ */
 .site-footer {
-  background-color: #05070e;
+  background-color: var(--bg-footer);
   padding: 5rem 0 0;
   border-top: 2px solid var(--tfcg-gold);
 }
@@ -1176,7 +1307,7 @@ section {
 }
 
 .footer-tagline {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
   font-size: 0.92rem;
   line-height: 1.7;
@@ -1195,7 +1326,7 @@ section {
   height: 40px;
   border-radius: 50%;
   background: rgba(26, 58, 143, 0.25);
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   transition: all var(--transition-base);
   font-size: 1rem;
 }
@@ -1207,7 +1338,7 @@ section {
 }
 
 .footer-heading {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-family: var(--font-heading);
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
@@ -1225,14 +1356,14 @@ section {
 }
 
 .footer-links a {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   font-size: 0.92rem;
   transition: all var(--transition-base);
   display: inline-block;
 }
 
 .footer-links a:hover {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   padding-left: 5px;
 }
 
@@ -1244,13 +1375,13 @@ section {
 
 .footer-service-times li {
   margin-bottom: 1rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   font-size: 0.92rem;
   line-height: 1.6;
 }
 
 .footer-service-times strong {
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   display: block;
   font-size: 0.88rem;
   text-transform: uppercase;
@@ -1259,7 +1390,7 @@ section {
 }
 
 .footer-address p {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   margin-bottom: 0.75rem;
   display: flex;
   gap: 10px;
@@ -1268,47 +1399,47 @@ section {
 }
 
 .footer-address i {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   margin-top: 3px;
   flex-shrink: 0;
 }
 
 .footer-address a {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   transition: color var(--transition-base);
 }
 
 .footer-address a:hover {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
 }
 
 .footer-ministry-statement {
   font-size: 0.85rem;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--border-faint);
   font-style: italic;
 }
 
 .footer-bottom {
   margin-top: 4rem;
   padding: 1.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   font-size: 0.88rem;
 }
 
 .footer-credit a {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   transition: color var(--transition-base);
 }
 
 .footer-credit a:hover {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
 }
 
 @media (max-width: 767.98px) {
@@ -1374,7 +1505,7 @@ section {
 }
 
 .scroll-top-btn:hover {
-  background-color: var(--tfcg-gold);
+  background-color: var(--tfcg-gold-text);
   transform: translateY(-3px);
 }
 
@@ -1394,7 +1525,7 @@ section {
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   z-index: 910;
   cursor: pointer;
   transition: all var(--transition-base);
@@ -1404,8 +1535,8 @@ section {
 .assistant-toggle:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 24px rgba(26, 58, 143, 0.65);
-  border-color: var(--tfcg-gold-light);
-  color: var(--tfcg-gold-light);
+  border-color: var(--tfcg-gold-text);
+  color: var(--tfcg-gold-text);
 }
 
 .assistant-toggle .assistant-badge {
@@ -1414,7 +1545,7 @@ section {
   right: -4px;
   width: 18px;
   height: 18px;
-  background-color: var(--tfcg-gold);
+  background-color: var(--tfcg-gold-text);
   border-radius: 50%;
   border: 2px solid var(--tfcg-dark);
   animation: pulse-gold 2s infinite;
@@ -1432,7 +1563,7 @@ section {
   right: calc(var(--float-right) + env(safe-area-inset-right, 0px));
   width: 350px;
   max-width: calc(100vw - 40px);
-  background: rgba(10, 13, 26, 0.97);
+  background: var(--modal-bg);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(212, 160, 23, 0.3);
   border-radius: 18px;
@@ -1455,7 +1586,7 @@ section {
 }
 
 .assistant-header {
-  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--tfcg-dark-2));
+  background: linear-gradient(135deg, var(--tfcg-blue-dark), var(--bg-secondary));
   padding: 1rem 1.25rem;
   border-bottom: 1px solid rgba(212, 160, 23, 0.2);
   display: flex;
@@ -1479,14 +1610,14 @@ section {
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   flex-shrink: 0;
 }
 
 .assistant-name {
   font-family: var(--font-heading);
   font-size: 0.95rem;
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -1510,7 +1641,7 @@ section {
 .assistant-close {
   background: none;
   border: none;
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0;
@@ -1519,7 +1650,7 @@ section {
 }
 
 .assistant-close:hover {
-  color: var(--tfcg-white);
+  color: var(--text-primary);
 }
 
 .assistant-messages {
@@ -1554,14 +1685,14 @@ section {
   background: rgba(26, 58, 143, 0.25);
   border: 1px solid rgba(212, 160, 23, 0.15);
   border-bottom-left-radius: 4px;
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   align-self: flex-start;
 }
 
 .msg.user {
   background: var(--tfcg-blue);
   border-bottom-right-radius: 4px;
-  color: var(--tfcg-white);
+  color: #fff;
   align-self: flex-end;
 }
 
@@ -1575,7 +1706,7 @@ section {
 .quick-reply-btn {
   background: rgba(212, 160, 23, 0.1);
   border: 1px solid rgba(212, 160, 23, 0.35);
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   border-radius: var(--radius-pill);
   padding: 0.3rem 0.75rem;
   font-size: 0.78rem;
@@ -1587,7 +1718,7 @@ section {
 
 .quick-reply-btn:hover {
   background: rgba(212, 160, 23, 0.22);
-  border-color: var(--tfcg-gold);
+  border-color: var(--tfcg-gold-text);
 }
 
 .assistant-input-wrap {
@@ -1596,15 +1727,15 @@ section {
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-top: 1px solid rgba(212, 160, 23, 0.15);
-  background: rgba(10, 13, 26, 0.5);
+  background: var(--overlay-soft);
 }
 
 .assistant-input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--border-faint);
+  border: 1px solid var(--overlay-strong);
   border-radius: var(--radius-pill);
-  color: var(--tfcg-white);
+  color: var(--text-primary);
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
   outline: none;
@@ -1650,6 +1781,7 @@ section {
   align-items: center;
   justify-content: center;
   text-align: center;
+  color: #fff;
   background: linear-gradient(135deg, var(--tfcg-dark), var(--tfcg-blue-dark));
   padding-top: 90px;
   padding-bottom: 3rem;
@@ -1663,7 +1795,7 @@ section {
   left: 0;
   right: 0;
   height: 80px;
-  background: linear-gradient(to top, var(--tfcg-dark-2), transparent);
+  background: linear-gradient(to top, var(--bg-secondary), transparent);
 }
 
 .player-card {
@@ -1705,7 +1837,7 @@ section {
    BADGES
    ============================================================ */
 .badge-gold {
-  background-color: var(--tfcg-gold);
+  background-color: var(--tfcg-gold-text);
   color: var(--tfcg-dark);
   font-weight: 700;
   font-size: 0.72rem;
@@ -1716,7 +1848,7 @@ section {
 
 .badge-blue {
   background-color: var(--tfcg-blue);
-  color: var(--tfcg-white);
+  color: #fff;
   font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: 0.5px;
@@ -1726,7 +1858,7 @@ section {
 
 .badge-red {
   background-color: var(--tfcg-red);
-  color: var(--tfcg-white);
+  color: #fff;
   font-weight: 600;
   font-size: 0.72rem;
   padding: 0.3rem 0.7rem;
@@ -1774,14 +1906,14 @@ section {
 .search-bar input {
   padding-right: 3rem;
   border-radius: var(--radius-pill) !important;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--border-faint);
   border: 1px solid rgba(212, 160, 23, 0.25);
-  color: var(--tfcg-white);
+  color: var(--text-primary);
 }
 
 .search-bar input:focus {
-  border-color: var(--tfcg-gold);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--tfcg-gold-text);
+  background: var(--border-subtle);
   box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
 }
 
@@ -1790,7 +1922,7 @@ section {
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
@@ -1805,9 +1937,9 @@ section {
 }
 
 .filter-tab {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--overlay-faint);
   border: 1px solid rgba(212, 160, 23, 0.25);
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   border-radius: var(--radius-pill);
   padding: 0.4rem 1.1rem;
   font-size: 0.85rem;
@@ -1821,7 +1953,7 @@ section {
 .filter-tab:hover,
 .filter-tab.active {
   background: var(--tfcg-gold);
-  border-color: var(--tfcg-gold);
+  border-color: var(--tfcg-gold-text);
   color: var(--tfcg-dark);
   font-weight: 700;
 }
@@ -1830,20 +1962,20 @@ section {
    MODAL
    ============================================================ */
 .modal-content {
-  background-color: var(--tfcg-dark-2);
+  background-color: var(--bg-secondary);
   border: 1px solid rgba(212, 160, 23, 0.35);
   border-radius: var(--radius-card);
-  color: var(--tfcg-white);
+  color: var(--text-primary);
 }
 
 .modal-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-subtle);
   padding: 1.25rem 1.5rem;
 }
 
 .modal-title {
   font-family: var(--font-heading);
-  color: var(--tfcg-white);
+  color: var(--text-primary);
 }
 
 .modal-body {
@@ -1867,7 +1999,7 @@ section {
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-faint);
 }
 
 .faith-item:last-child {
@@ -1885,7 +2017,7 @@ section {
   justify-content: center;
   font-family: var(--font-display);
   font-size: 0.8rem;
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -2046,7 +2178,7 @@ section {
 .announcement-bar {
   background: linear-gradient(90deg, rgba(212, 160, 23, 0.16), rgba(212, 160, 23, 0.08));
   border-bottom: 1px solid rgba(212, 160, 23, 0.3);
-  color: #f5e6c4;
+  color: var(--text-primary);
   font-size: 0.92rem;
   padding: 0.6rem 1rem;
   position: relative;
@@ -2153,8 +2285,8 @@ section {
 }
 
 .accordion-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--overlay-soft);
+  border: 1px solid var(--border-subtle);
   margin-bottom: 0.75rem;
   border-radius: 10px;
   overflow: hidden;
@@ -2162,8 +2294,20 @@ section {
 
 .accordion-button {
   background: transparent;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
+}
+
+.accordion-button::after {
+  /* Bootstrap's default chevron icon is dark, made for light
+     backgrounds — invert it for our (default) dark theme so it's
+     actually visible, then undo the invert in light mode where the
+     default dark icon already reads correctly. */
+  filter: brightness(0) invert(1);
+}
+
+[data-theme="light"] .accordion-button::after {
+  filter: none;
 }
 
 .accordion-button:not(.collapsed) {
@@ -2184,7 +2328,7 @@ section {
 .form-not-configured-notice {
   background: rgba(212, 160, 23, 0.1);
   border: 1px solid rgba(212, 160, 23, 0.3);
-  color: #f5e6c4;
+  color: var(--text-primary);
 }
 
 @media (max-width: 575.98px) {
@@ -2207,9 +2351,9 @@ section {
 }
 
 .media-tabs .nav-link {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--tfcg-gray);
+  background: var(--overlay-soft);
+  border: 1px solid var(--overlay-strong);
+  color: var(--text-secondary);
   border-radius: var(--radius-pill);
   padding: 0.65rem 1.5rem;
   font-family: var(--font-heading);
@@ -2223,14 +2367,14 @@ section {
 }
 
 .media-tabs .nav-link:hover {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   border-color: rgba(212, 160, 23, 0.35);
 }
 
 .media-tabs .nav-link.active {
   background: linear-gradient(135deg, var(--tfcg-blue), var(--tfcg-blue-dark));
-  border-color: var(--tfcg-gold);
-  color: var(--tfcg-gold);
+  border-color: var(--tfcg-gold-text);
+  color: var(--tfcg-gold-text);
   box-shadow: 0 4px 16px rgba(26, 58, 143, 0.4);
 }
 
@@ -2245,8 +2389,8 @@ section {
   overflow: hidden;
   cursor: pointer;
   aspect-ratio: 4 / 3;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--overlay-soft);
+  border: 1px solid var(--border-subtle);
   transition: all var(--transition-base);
 }
 
@@ -2292,7 +2436,7 @@ section {
 }
 
 .media-photo-card .media-card-date {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2335,7 +2479,7 @@ section {
 /* --- Update / News cards --- */
 .media-update-card {
   background: rgba(26, 58, 143, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   overflow: hidden;
   height: 100%;
@@ -2369,7 +2513,7 @@ section {
 }
 
 .media-update-card .update-date {
-  color: var(--tfcg-gold);
+  color: var(--tfcg-gold-text);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2377,7 +2521,7 @@ section {
 }
 
 .media-update-card .update-summary {
-  color: var(--tfcg-gray);
+  color: var(--text-secondary);
   flex-grow: 1;
 }
 
@@ -2439,5 +2583,69 @@ section {
     width: 36px;
     height: 36px;
     font-size: 1rem;
+  }
+}
+
+/* ============================================================
+   SERVICE TIMES — recurring/monthly program badge
+   ============================================================ */
+.service-frequency-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(212, 160, 23, 0.14);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: var(--tfcg-gold-text);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  max-width: calc(100% - 28px);
+  text-align: right;
+  line-height: 1.3;
+}
+
+@media (max-width: 575.98px) {
+  .service-frequency-badge {
+    position: static;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   THEME TOGGLE BUTTON
+   ============================================================ */
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle-strong);
+  background: var(--overlay-medium);
+  color: var(--tfcg-gold-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover,
+.theme-toggle-btn:focus-visible {
+  background: rgba(212, 160, 23, 0.16);
+  border-color: var(--tfcg-gold-text);
+  transform: rotate(15deg);
+  color: var(--tfcg-gold-text);
+  outline: none;
+}
+
+@media (max-width: 991.98px) {
+  .theme-toggle-btn {
+    margin: 0.75rem auto 0;
   }
 }

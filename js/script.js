@@ -179,5 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  window.TFCG_setupFilters();
+  /* NOTE: TFCG_setupFilters() is intentionally NOT called here.
+     js/render.js calls it once, after all JSON content (and any
+     dynamically-generated filter-tab buttons, like on the Media Centre
+     page) has finished rendering. Calling it here too would wire the
+     group before those buttons exist, mark the group as "already
+     wired", and then permanently skip it once the real buttons appear —
+     exactly the bug that broke filtering on the Media page. */
 });

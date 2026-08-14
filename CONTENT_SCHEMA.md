@@ -98,6 +98,7 @@ pre-filled message.
 | `categories` | Space-separated tags used by the filter tabs, e.g. `"bestseller faith"` |
 | `badge` | `"Featured"`, `"New"`, `"Bestseller"`, or `""` for none |
 | `whatsappNumber` | Number (no `+` or spaces) the buy button messages |
+| `published` | `true` shows the book on the Books page; `false` keeps the entry in this file (nothing is lost) but hides it from the site — the JSON equivalent of "commenting it out" |
 
 ## content/sermons.json
 
@@ -354,15 +355,21 @@ why this wasn't made fully dynamic).
 {
   "provider": "youtube",
   "channelHandle": "TfcglobalTV",
+  "channelId": "",
   "embedMode": "channel",
   "videoId": "",
   "autoplay": false
 }
 ```
 
-`embedMode: "channel"` shows whatever is currently live (or the latest
-upload) on the given `channelHandle`. Switch to `embedMode: "video"` and
-fill in `videoId` to pin one specific broadcast.
+`embedMode: "channel"` shows whatever is currently live on the given
+`channelId`. **This must be the channel's Channel ID (a `UC...` string
+from [youtube.com/account_advanced](https://www.youtube.com/account_advanced)),
+not the `@channelHandle`** — YouTube's live-channel embed doesn't accept
+handles. `channelHandle` is kept only for the human-readable "Watch on
+YouTube" fallback link shown while `channelId` is empty. Switch to
+`embedMode: "video"` and fill in `videoId` to pin one specific broadcast
+instead. See **LIVESTREAM_GUIDE.md** for full walkthrough.
 
 ## config/app.json — PWA / install banner
 
