@@ -644,3 +644,50 @@ requests, not a real site issue — icons load normally from the actual
 CDN in production, which is how this exact setup already runs
 reliably on countless sites), so icon *rendering* specifically wasn't
 visually confirmed this round, only the surrounding layout/color logic.
+
+---
+
+## Changelog — AOS robustness, free replay videos, screenshot investigation
+
+**Robustness fix: content no longer depends on a third-party CDN
+loading successfully.** AOS's own CSS hides every `[data-aos]` element
+(which includes the entire homepage hero and large parts of every other
+page) until its JS explicitly reveals it. If `aos.js` ever fails to
+load — CDN hiccup, ad blocker, restrictive network — those elements
+would stay invisible forever, since nothing else adds the reveal class.
+Added a safety net in `js/script.js`: shortly after page load, anything
+still hidden gets force-revealed regardless of whether AOS actually
+initialized. Belt-and-braces — doesn't change normal behavior at all,
+only prevents a total content blackout if the animation library alone
+fails.
+
+**Investigated a visual artifact from a user screenshot** showing
+blurred, ghosted content overlapping the footer on the Appointments
+page. Measured the actual gap between page content and the footer in a
+real browser: **0px** — no structural bug. The artifact is consistent
+with a known interaction between `position: fixed` elements (the
+install banner, which uses `backdrop-filter: blur()`) and full-page
+"stitched" screenshot tools, which can bake a fixed element into the
+image at an intermediate scroll position. Not reproducible during
+normal interactive scrolling; no code change was needed.
+
+**New: free video replay ("Watch Previous Messages") on the Live
+Stream page.** Previously, whenever the church wasn't live, visitors
+just saw a static "Currently Offline" message with no video at all.
+Added a second embed below the schedule — YouTube gives every channel
+an automatic "Uploads" playlist (its ID is simply the Channel ID with
+`UC` swapped for `UU`), which `js/render.js` now derives automatically
+from `config/livestream.json` → `channelId` (already set) and embeds.
+This is entirely free (no API key, no paid tier), requires zero manual
+setup, and updates itself automatically every time a new video is
+uploaded to the channel. Documented in `LIVESTREAM_GUIDE.md`, new
+section 7.
+
+**Form error handling improved.** `wireForm()` in `js/render.js` now
+surfaces the actual reason a Formspree submission was rejected (to the
+console, and where possible to the person filling out the form)
+instead of one generic failure message for every possible cause —
+makes real issues (e.g. an unconfirmed Formspree form, which requires
+clicking a one-time confirmation link sent to the form owner's email
+before it starts accepting submissions) actually diagnosable instead of
+just looking broken with no clue why.

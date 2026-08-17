@@ -113,6 +113,37 @@ anything else about the site.
 
 ---
 
+## 7. Watch Previous Messages (Free, Automatic Replay)
+
+The Live Stream page includes a **"Watch Previous Messages"** section
+below the main player, so visitors are never just shown a dead
+"offline" message with nothing to actually watch — whether or not the
+church is live right now, this section always has real, playable video.
+
+**How it works — and why it's free with zero setup:** every YouTube
+channel automatically gets an "Uploads" playlist containing every video
+ever posted to it, in order — no configuration needed on YouTube's end.
+Its playlist ID is always just the Channel ID with the `UC` prefix
+swapped for `UU`. For example:
+
+```
+Channel ID:          UCjxlXbR47Gg304KQH-uYFsQ
+Uploads playlist ID: UUjxlXbR47Gg304KQH-uYFsQ
+```
+
+The website computes this automatically from `config/livestream.json` →
+`channelId` (the same Channel ID already used for the live player in
+Section 1) — **there is nothing to configure separately.** The moment a
+new video is uploaded to the channel, it appears here automatically,
+with no website update required. Visitors can also open the playlist
+panel inside the embedded player to browse and pick any older message.
+
+This is a genuinely free YouTube feature (no API key, no paid tier, no
+third-party service) — it's simply a different kind of embed URL
+pointed at a playlist instead of the live channel.
+
+---
+
 ## Quick Reference
 
 | I want to... | What to do |
@@ -122,4 +153,5 @@ anything else about the site.
 | Feature one specific past video | Set `embedMode: "video"` and `videoId` in `config/livestream.json` (Section 2). |
 | Go back to normal automatic behavior | Set `embedMode: "channel"` again (Section 2). |
 | Let people comment or like the stream | They tap "Watch on YouTube" — comments/likes only exist on YouTube itself (Section 4). |
+| Show past messages when nothing is live | Already on — powered automatically by `channelId`, nothing to set up (Section 7). |
 | Make a real-time "LIVE NOW" badge | Requires a backend + YouTube Data API — not yet built (Section 6). |

@@ -545,6 +545,20 @@
     return null;
   }
 
+  function getUploadsPlaylistSrc(config) {
+    /* Every YouTube channel automatically has an "uploads" playlist —
+       free, no API key, no manual setup — whose ID is simply the
+       Channel ID with its "UC" prefix swapped for "UU". Embedding that
+       playlist means this section always has real, playable content
+       (the channel's most recent video first, with older ones
+       reachable from the in-player playlist panel) instead of ever
+       showing a dead "offline" state. See LIVESTREAM_GUIDE.md, section
+       7, for more detail. */
+    if (!config.channelId || config.channelId.slice(0, 2) !== "UC") return null;
+    const uploadsPlaylistId = "UU" + config.channelId.slice(2);
+    return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(uploadsPlaylistId)}`;
+  }
+
   function renderLivestream() {
     const content = window.TFCG_CONTENT.livestream;
     const config = window.TFCG_CONFIG.livestream;
@@ -567,6 +581,25 @@
               <i class="bi bi-youtube fs-1 text-gold mb-3" aria-hidden="true"></i>
               <p class="text-secondary mb-3">The live embed isn't fully set up yet.</p>
               ${handle ? `<a href="https://www.youtube.com/@${escapeHtml(handle)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-sm">Watch on YouTube</a>` : ""}
+            </div>
+          `;
+        }
+      }
+    }
+
+    const replayIframe = $("livestream-replay-iframe");
+    if (replayIframe && config) {
+      const replaySrc = getUploadsPlaylistSrc(config);
+      if (replaySrc) {
+        replayIframe.src = replaySrc;
+      } else {
+        const wrap = replayIframe.closest(".ratio");
+        if (wrap) {
+          wrap.classList.remove("ratio-16x9");
+          wrap.innerHTML = `
+            <div class="d-flex flex-column align-items-center justify-content-center text-center p-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-card); min-height: 280px;">
+              <i class="bi bi-collection-play fs-1 text-gold mb-3" aria-hidden="true"></i>
+              <p class="text-secondary mb-0">Previous messages will appear here once the Channel ID is set up.</p>
             </div>
           `;
         }
@@ -776,24 +809,45 @@
         body: new FormData(form)
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Submission failed");
-          if (btn) {
-            btn.innerHTML = "Message Sent Successfully";
-            btn.classList.remove("btn-primary");
-            btn.classList.add("btn-success");
+          if (res.ok) {
+            if (btn) {
+              btn.innerHTML = "Message Sent Successfully";
+              btn.classList.remove("btn-primary");
+              btn.classList.add("btn-success");
+            }
+            form.reset();
+            setTimeout(() => {
+              if (btn) {
+                btn.innerHTML = originalText;
+                btn.classList.remove("btn-success");
+                btn.classList.add("btn-primary");
+                btn.disabled = false;
+              }
+            }, 2800);
+            return;
           }
-          form.reset();
-          setTimeout(() => {
+          /* Formspree returns JSON describing what went wrong (e.g. an
+             unconfirmed/inactive form, a disabled endpoint, a field
+             Formspree rejected) — surface that instead of a generic
+             failure so this is actually diagnosable, both in the
+             console and, where possible, to the person filling the
+             form in. See https://help.formspree.io if the message
+             mentions the form needing confirmation. */
+          return res.json().catch(() => null).then((data) => {
+            const detail = data && data.errors && data.errors.length
+              ? data.errors.map((e) => e.message).join(" ")
+              : `HTTP ${res.status}`;
+            console.error("[TFCG] Form submission rejected by Formspree:", detail, data);
+            friendlyFormNotice(form, `Your message could not be sent (${detail}). Please try again, or contact us directly by phone or WhatsApp.`);
             if (btn) {
               btn.innerHTML = originalText;
-              btn.classList.remove("btn-success");
-              btn.classList.add("btn-primary");
               btn.disabled = false;
             }
-          }, 2800);
+          });
         })
-        .catch(() => {
-          friendlyFormNotice(form, "Something went wrong sending your message. Please try again, or contact us directly by phone or WhatsApp.");
+        .catch((err) => {
+          console.error("[TFCG] Form submission network error:", err);
+          friendlyFormNotice(form, "Something went wrong sending your message. Please check your internet connection and try again, or contact us directly by phone or WhatsApp.");
           if (btn) {
             btn.innerHTML = originalText;
             btn.disabled = false;

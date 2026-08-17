@@ -13,6 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* Safety net: AOS's CSS hides every [data-aos] element until its JS
+     explicitly reveals it (adding .aos-animate). That's the entire
+     hero content on the homepage, and large parts of every other page.
+     If AOS.js fails to load — CDN outage, ad blocker, restrictive
+     network, slow connection — those elements would otherwise stay
+     invisible forever, since nothing else ever adds that class. Content
+     should never be permanently hidden because of a third-party
+     animation library, so force visibility as a fallback shortly after
+     load if AOS never took effect. */
+  setTimeout(() => {
+    const stillHidden = document.querySelectorAll('[data-aos]:not(.aos-animate)');
+    if (stillHidden.length) {
+      stillHidden.forEach((el) => el.classList.add('aos-animate'));
+    }
+  }, 2500);
+
   /* Navbar scroll state */
   const navbar = document.getElementById('navbar');
   if (navbar) {
