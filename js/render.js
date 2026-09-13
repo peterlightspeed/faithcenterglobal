@@ -530,17 +530,28 @@
   /* Livestream page                                              */
   /* ---------------------------------------------------------- */
 
+  /* A real YouTube Channel ID is always "UC" followed by 22 more
+     URL-safe characters (24 chars total). Anything else — an @handle,
+     a partial paste, empty string, stray whitespace — is NOT a valid
+     Channel ID and will make the "live_stream?channel=" embed below
+     fail or (worse) silently resolve to the wrong/unrelated channel.
+     Validating this up front, instead of only checking truthiness, is
+     what actually prevents the site from "streaming incorrectly". */
+  function isValidChannelId(id) {
+    return typeof id === "string" && /^UC[a-zA-Z0-9_-]{22}$/.test(id.trim());
+  }
+
   function getLivestreamEmbedSrc(config) {
     if (config.embedMode === "video" && config.videoId) {
-      return `https://www.youtube.com/embed/${config.videoId}${config.autoplay ? "?autoplay=1" : ""}`;
+      return `https://www.youtube.com/embed/${config.videoId.trim()}${config.autoplay ? "?autoplay=1" : ""}`;
     }
     /* IMPORTANT: YouTube's "always show whatever is live on this
        channel" embed only works with the channel's Channel ID (a
        "UC..." string) — the @handle does NOT work here, even though
        it works almost everywhere else on YouTube. See
        CONTENT_MANAGEMENT_GUIDE.md → "Setting Up the Live Stream". */
-    if (config.channelId) {
-      return `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId)}${config.autoplay ? "&autoplay=1" : ""}`;
+    if (isValidChannelId(config.channelId)) {
+      return `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId.trim())}${config.autoplay ? "&autoplay=1" : ""}`;
     }
     return null;
   }
@@ -554,8 +565,8 @@
        reachable from the in-player playlist panel) instead of ever
        showing a dead "offline" state. See LIVESTREAM_GUIDE.md, section
        7, for more detail. */
-    if (!config.channelId || config.channelId.slice(0, 2) !== "UC") return null;
-    const uploadsPlaylistId = "UU" + config.channelId.slice(2);
+    if (!isValidChannelId(config.channelId)) return null;
+    const uploadsPlaylistId = "UU" + config.channelId.trim().slice(2);
     return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(uploadsPlaylistId)}`;
   }
 
@@ -567,6 +578,12 @@
     if (iframe && config) {
       const src = getLivestreamEmbedSrc(config);
       if (src) {
+        /* Grant autoplay/fullscreen permissions on the iframe itself —
+           without this "allow" attribute, YouTube's player silently
+           blocks autoplay (config.autoplay: true would otherwise do
+           nothing) and can restrict fullscreen inside embedded
+           contexts on some browsers. */
+        iframe.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
         iframe.src = src;
       } else {
         /* No Channel ID configured yet — show a friendly fallback
@@ -591,6 +608,7 @@
     if (replayIframe && config) {
       const replaySrc = getUploadsPlaylistSrc(config);
       if (replaySrc) {
+        replayIframe.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
         replayIframe.src = replaySrc;
       } else {
         const wrap = replayIframe.closest(".ratio");
