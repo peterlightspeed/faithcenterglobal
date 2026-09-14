@@ -1833,6 +1833,91 @@ section {
   box-shadow: var(--shadow-card);
 }
 
+/* Click-to-play facade shown in place of the live/replay embed until the
+   visitor taps it — see renderEmbedFacade() in js/render.js. */
+.video-facade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  background-color: var(--tfcg-dark-2);
+  background-size: cover;
+  background-position: center;
+}
+
+.video-facade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 13, 26, 0.45) 0%, rgba(10, 13, 26, 0.75) 100%);
+}
+
+.video-facade-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--tfcg-red);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 0.32rem 0.7rem;
+  border-radius: var(--radius-pill);
+}
+
+.video-facade-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulse-red 1.5s infinite;
+}
+
+.video-facade-play {
+  position: relative;
+  z-index: 1;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  color: var(--tfcg-gold);
+  background: rgba(212, 160, 23, 0.16);
+  border: 2px solid var(--tfcg-gold);
+  transition: transform var(--transition-base), background var(--transition-base), color var(--transition-base);
+}
+
+.video-facade:hover .video-facade-play,
+.video-facade:focus-visible .video-facade-play {
+  transform: scale(1.08);
+  background: var(--tfcg-gold);
+  color: var(--tfcg-dark);
+}
+
+.video-facade-caption {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
 /* ============================================================
    BADGES
    ============================================================ */

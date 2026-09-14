@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <!-- Theme (dark/light) is applied here, before any CSS/content loads,
-       to avoid a flash of the wrong theme. Reads a saved choice from
-       localStorage, or falls back to the visitor's OS-level preference
-       on their first visit. The toggle button (see js/theme.js) is the
-       only thing that changes this after page load. -->
+       to avoid a flash of the wrong theme. Dark is the site's default —
+       a visitor only gets light mode if they explicitly saved that
+       choice via the toggle (see js/theme.js) on a previous visit. -->
   <script>
     (function () {
       try {
         var stored = localStorage.getItem('tfcg-theme');
-        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        var theme = stored || 'dark'; /* Dark is the site's default theme regardless of OS preference — only an explicit stored choice overrides it. */
         if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) { /* localStorage/matchMedia unavailable — default dark theme applies */ }
     })();
@@ -20,13 +19,13 @@
   <title>Media Centre | The Faith Centre Global</title>
   <meta name="description" content="Explore photos, videos, and the latest news and updates from The Faith Centre Global — services, conferences, outreach, and more.">
   <meta name="keywords" content="TFCG gallery, TFCG photos, TFCG videos, TFCG news, church updates Lagos, TFCG media centre">
-  <link rel="canonical" href="https://tfcglobal.org/media.html">
+  <link rel="canonical" href="https://www.thefaithcentreglobal.org/media.html">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Media Centre | The Faith Centre Global">
   <meta property="og:description" content="Photos, videos, and the latest news and updates from The Faith Centre Global.">
   <meta property="og:image" content="public/opengraph.jpg">
-  <meta property="og:url" content="https://tfcglobal.org/media.html">
+  <meta property="og:url" content="https://www.thefaithcentreglobal.org/media.html">
   <meta property="og:site_name" content="The Faith Centre Global">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Media Centre | The Faith Centre Global">
@@ -59,8 +58,8 @@
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tfcglobal.org/index.html" },
-        { "@type": "ListItem", "position": 2, "name": "Media Centre", "item": "https://tfcglobal.org/media.html" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thefaithcentreglobal.org/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Media Centre", "item": "https://www.thefaithcentreglobal.org/media.html" }
       ]
     }
     </script>
@@ -70,8 +69,8 @@
       "@type": "CollectionPage",
       "name": "Media Centre",
       "description": "Photos, videos, and the latest news and updates from The Faith Centre Global.",
-      "url": "https://tfcglobal.org/media.html",
-      "isPartOf": { "@type": "WebSite", "name": "The Faith Centre Global", "url": "https://tfcglobal.org/" }
+      "url": "https://www.thefaithcentreglobal.org/media.html",
+      "isPartOf": { "@type": "WebSite", "name": "The Faith Centre Global", "url": "https://www.thefaithcentreglobal.org/" }
     }
     </script>
   </head>

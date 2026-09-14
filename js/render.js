@@ -543,7 +543,7 @@
 
   function getLivestreamEmbedSrc(config) {
     if (config.embedMode === "video" && config.videoId) {
-      return `https://www.youtube.com/embed/${config.videoId.trim()}${config.autoplay ? "?autoplay=1" : ""}`;
+      return `https://www.youtube.com/embed/${config.videoId.trim()}`;
     }
     /* IMPORTANT: YouTube's "always show whatever is live on this
        channel" embed only works with the channel's Channel ID (a
@@ -551,7 +551,7 @@
        it works almost everywhere else on YouTube. See
        CONTENT_MANAGEMENT_GUIDE.md → "Setting Up the Live Stream". */
     if (isValidChannelId(config.channelId)) {
-      return `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId.trim())}${config.autoplay ? "&autoplay=1" : ""}`;
+      return `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId.trim())}`;
     }
     return null;
   }
@@ -570,58 +570,98 @@
     return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(uploadsPlaylistId)}`;
   }
 
+  /* Click-to-play "facade" instead of an always-embedded iframe.
+     ------------------------------------------------------------
+     Previously the iframe loaded (and tried to autoplay) the moment
+     the page opened. For the channel-based live embed, that means
+     every visitor who lands here while the church ISN'T live gets
+     YouTube's own raw "Video unavailable" error screen shown to them
+     automatically — which reads as a broken site, not an offline
+     stream. Loading the real embed only after a deliberate click:
+       - never shows that broken-looking screen unprompted
+       - makes autoplay 100% reliable (it's now a real user gesture,
+         which every browser permits, instead of a programmatic
+         autoplay attempt many browsers silently block anyway)
+       - avoids loading a YouTube iframe (and its scripts) for
+         visitors who don't end up watching
+     A poster image + play button + label stand in until then. */
+  function renderEmbedFacade(container, src, opts) {
+    container.classList.add("ratio-16x9");
+    const posterStyle = opts.poster ? ` style="background-image:url('${escapeHtml(opts.poster)}')"` : "";
+    container.innerHTML = `
+      <button type="button" class="video-facade"${posterStyle} aria-label="Play: ${escapeHtml(opts.label)}">
+        ${opts.badge ? `<span class="video-facade-badge">${escapeHtml(opts.badge)}</span>` : ""}
+        <span class="video-facade-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
+        <span class="video-facade-caption">${escapeHtml(opts.caption || opts.label)}</span>
+      </button>
+    `;
+    container.querySelector(".video-facade").addEventListener("click", function () {
+      const sep = src.includes("?") ? "&" : "?";
+      container.innerHTML = `<iframe src="${src}${sep}autoplay=1" title="${escapeHtml(opts.label)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>`;
+    }, { once: true });
+  }
+
+  function renderEmbedUnavailable(container, opts) {
+    container.classList.remove("ratio-16x9");
+    container.innerHTML = `
+      <div class="d-flex flex-column align-items-center justify-content-center text-center p-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-card); min-height: 280px;">
+        <i class="bi ${opts.icon} fs-1 text-gold mb-3" aria-hidden="true"></i>
+        <p class="text-secondary mb-0${opts.linkHref ? " mb-3" : ""}">${escapeHtml(opts.message)}</p>
+        ${opts.linkHref ? `<a href="${escapeHtml(opts.linkHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-sm">${escapeHtml(opts.linkLabel)}</a>` : ""}
+      </div>
+    `;
+  }
+
   function renderLivestream() {
     const content = window.TFCG_CONTENT.livestream;
     const config = window.TFCG_CONFIG.livestream;
 
-    const iframe = $("livestream-iframe") || $("home-livestream-iframe");
-    if (iframe && config) {
-      const src = getLivestreamEmbedSrc(config);
-      if (src) {
-        /* Grant autoplay/fullscreen permissions on the iframe itself —
-           without this "allow" attribute, YouTube's player silently
-           blocks autoplay (config.autoplay: true would otherwise do
-           nothing) and can restrict fullscreen inside embedded
-           contexts on some browsers. */
-        iframe.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
-        iframe.src = src;
-      } else {
-        /* No Channel ID configured yet — show a friendly fallback
-           instead of a broken/blank embed. Upgrades automatically once
-           config/livestream.json → channelId is filled in. */
-        const wrap = iframe.closest(".ratio");
-        if (wrap) {
-          wrap.classList.remove("ratio-16x9");
-          const handle = config.channelHandle || "";
-          wrap.innerHTML = `
-            <div class="d-flex flex-column align-items-center justify-content-center text-center p-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-card); min-height: 280px;">
-              <i class="bi bi-youtube fs-1 text-gold mb-3" aria-hidden="true"></i>
-              <p class="text-secondary mb-3">The live embed isn't fully set up yet.</p>
-              ${handle ? `<a href="https://www.youtube.com/@${escapeHtml(handle)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold btn-sm">Watch on YouTube</a>` : ""}
-            </div>
-          `;
-        }
-      }
-    }
+    /* Both the homepage and the Live Stream page each have their own
+       "main player" and "previous messages" containers — render every
+       one that's present on the current page. */
+    const mainContainers = [$("livestream-embed"), $("home-livestream-embed")].filter(Boolean);
+    const replayContainers = [$("livestream-replay-embed"), $("home-livestream-replay-embed")].filter(Boolean);
 
-    const replayIframe = $("livestream-replay-iframe");
-    if (replayIframe && config) {
-      const replaySrc = getUploadsPlaylistSrc(config);
-      if (replaySrc) {
-        replayIframe.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
-        replayIframe.src = replaySrc;
-      } else {
-        const wrap = replayIframe.closest(".ratio");
-        if (wrap) {
-          wrap.classList.remove("ratio-16x9");
-          wrap.innerHTML = `
-            <div class="d-flex flex-column align-items-center justify-content-center text-center p-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-card); min-height: 280px;">
-              <i class="bi bi-collection-play fs-1 text-gold mb-3" aria-hidden="true"></i>
-              <p class="text-secondary mb-0">Previous messages will appear here once the Channel ID is set up.</p>
-            </div>
-          `;
+    if (config) {
+      const src = getLivestreamEmbedSrc(config);
+      mainContainers.forEach((container) => {
+        if (src) {
+          renderEmbedFacade(container, src, {
+            label: "The Faith Centre Global live stream",
+            poster: "images/hero-bg.jpg",
+            badge: "LIVE",
+            caption: "Tap to watch — plays instantly if we're live right now"
+          });
+        } else {
+          /* No Channel ID configured yet — show a friendly fallback
+             instead of a broken/blank embed. Upgrades automatically
+             once config/livestream.json → channelId is filled in. */
+          renderEmbedUnavailable(container, {
+            icon: "bi-youtube",
+            message: "The live embed isn't fully set up yet.",
+            linkHref: config.channelHandle ? `https://www.youtube.com/@${config.channelHandle}` : "",
+            linkLabel: "Watch on YouTube"
+          });
         }
-      }
+      });
+
+      const replaySrc = getUploadsPlaylistSrc(config);
+      replayContainers.forEach((container) => {
+        if (replaySrc) {
+          renderEmbedFacade(container, replaySrc, {
+            label: "Previous messages from The Faith Centre Global",
+            poster: "images/congregation.jpg",
+            caption: "Tap to watch our most recent messages"
+          });
+        } else {
+          renderEmbedUnavailable(container, {
+            icon: "bi-collection-play",
+            message: "Previous messages will appear here once the Channel ID is set up.",
+            linkHref: "",
+            linkLabel: ""
+          });
+        }
+      });
     }
 
     if (!content) return;

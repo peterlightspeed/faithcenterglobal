@@ -5,12 +5,17 @@
   actual FIRST-PAINT theme decision (avoiding a flash of the
   wrong theme) happens in a tiny inline <script> at the very top
   of every page's <head> — see that script for the initial
-  localStorage/system-preference logic. This file only handles:
+  localStorage logic. Dark is the site's default theme; this file
+  only handles:
     - Wiring the toggle button's click
     - Updating the button's icon/label to match the active theme
     - Persisting the visitor's explicit choice to localStorage
-    - Following the OS-level theme if the visitor hasn't made an
-      explicit choice yet (i.e., no localStorage value saved)
+
+  Note: this deliberately does NOT follow the OS-level
+  prefers-color-scheme setting (it used to, on first visit only —
+  removed so dark stays the default for every new visitor
+  regardless of their system theme, per site preference). A
+  visitor only sees light mode after explicitly picking it here.
 */
 (function () {
   const STORAGE_KEY = "tfcg-theme";
@@ -74,19 +79,6 @@
         applyTheme(next);
         setStoredTheme(next);
       });
-    }
-
-    /* If the visitor hasn't made an explicit choice on this device yet,
-       keep following their OS-level preference live (e.g. their system
-       switches to light mode at sunrise). Once they click the toggle,
-       their explicit choice always wins from then on. */
-    if (!getStoredTheme() && window.matchMedia) {
-      const mql = window.matchMedia("(prefers-color-scheme: light)");
-      const handleChange = function (e) {
-        if (!getStoredTheme()) applyTheme(e.matches ? "light" : "dark");
-      };
-      if (mql.addEventListener) mql.addEventListener("change", handleChange);
-      else if (mql.addListener) mql.addListener(handleChange); // Safari <14
     }
   });
 })();

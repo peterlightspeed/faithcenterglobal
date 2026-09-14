@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <!-- Theme (dark/light) is applied here, before any CSS/content loads,
-       to avoid a flash of the wrong theme. Reads a saved choice from
-       localStorage, or falls back to the visitor's OS-level preference
-       on their first visit. The toggle button (see js/theme.js) is the
-       only thing that changes this after page load. -->
+       to avoid a flash of the wrong theme. Dark is the site's default —
+       a visitor only gets light mode if they explicitly saved that
+       choice via the toggle (see js/theme.js) on a previous visit. -->
   <script>
     (function () {
       try {
         var stored = localStorage.getItem('tfcg-theme');
-        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        var theme = stored || 'dark'; /* Dark is the site's default theme regardless of OS preference — only an explicit stored choice overrides it. */
         if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) { /* localStorage/matchMedia unavailable — default dark theme applies */ }
     })();
@@ -20,13 +19,13 @@
   <title>Live Stream | The Faith Centre Global</title>
   <meta name="description" content="Watch The Faith Centre Global live on YouTube every Sunday and Wednesday. Join our online congregation from anywhere in the world.">
   <meta name="keywords" content="TFCG live stream, watch church online, TFCG YouTube, online service Lagos">
-  <link rel="canonical" href="https://tfcglobal.org/livestream.html">
+  <link rel="canonical" href="https://www.thefaithcentreglobal.org/livestream.html">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Live Stream | The Faith Centre Global">
   <meta property="og:description" content="Join our online congregation from anywhere in the world.">
   <meta property="og:image" content="public/opengraph.jpg">
-  <meta property="og:url" content="https://tfcglobal.org/livestream.html">
+  <meta property="og:url" content="https://www.thefaithcentreglobal.org/livestream.html">
   <meta property="og:site_name" content="The Faith Centre Global">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Live Stream | The Faith Centre Global">
@@ -59,8 +58,8 @@
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tfcglobal.org/index.html" },
-        { "@type": "ListItem", "position": 2, "name": "Livestream", "item": "https://tfcglobal.org/livestream.html" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thefaithcentreglobal.org/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Livestream", "item": "https://www.thefaithcentreglobal.org/livestream.html" }
       ]
     }
     </script>
@@ -131,14 +130,15 @@
               <a href="https://www.youtube.com/@TfcglobalTV" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-gold"><i class="bi bi-youtube me-1" aria-hidden="true"></i> <span id="livestream-subscribe-label">Subscribe</span></a>
             </div>
 
-            <div class="ratio ratio-16x9">
+            <div class="ratio ratio-16x9" id="livestream-embed">
               <!--
                 LIVESTREAM EMBED — see LIVESTREAM_GUIDE.md for full instructions.
-                The src attribute below is set automatically by js/render.js from
-                config/livestream.json. To feature one specific past broadcast
-                instead of the live channel feed, set "embedMode": "video" and
-                "videoId": "VIDEO_ID" in config/livestream.json — no HTML edit
-                needed.
+                Filled in by js/render.js from config/livestream.json as a
+                click-to-play facade (becomes the real embed once tapped — see
+                LIVESTREAM_GUIDE.md, section 8). To feature one specific past
+                broadcast instead of the live channel feed, set "embedMode":
+                "video" and "videoId": "VIDEO_ID" in config/livestream.json —
+                no HTML edit needed.
 
                 TODO: To automatically detect and switch to a live video without
                 manual edits, integrate the YouTube Data API v3 "search.list"
@@ -146,7 +146,6 @@
                 Do NOT implement this without a backend, since it requires a
                 server-side API key.
               -->
-              <iframe id="livestream-iframe" src="" title="The Faith Centre Global live stream" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
             </div>
           </div>
         </div>
@@ -190,8 +189,8 @@
         <div class="col-lg-10">
           <div class="glass-card">
             <h2 class="heading-font text-white pb-3 mb-4 h4" style="border-bottom: 1px solid rgba(255,255,255,0.08);"><i class="bi bi-collection-play text-gold me-2" aria-hidden="true"></i>Watch Previous Messages</h2>
-            <div class="ratio ratio-16x9">
-              <iframe id="livestream-replay-iframe" src="" title="The Faith Centre Global — previous messages" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
+            <div class="ratio ratio-16x9" id="livestream-replay-embed">
+              <!-- Filled in by js/render.js from config/livestream.json -->
             </div>
           </div>
         </div>

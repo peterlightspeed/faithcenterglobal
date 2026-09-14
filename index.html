@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <!-- Theme (dark/light) is applied here, before any CSS/content loads,
-       to avoid a flash of the wrong theme. Reads a saved choice from
-       localStorage, or falls back to the visitor's OS-level preference
-       on their first visit. The toggle button (see js/theme.js) is the
-       only thing that changes this after page load. -->
+       to avoid a flash of the wrong theme. Dark is the site's default —
+       a visitor only gets light mode if they explicitly saved that
+       choice via the toggle (see js/theme.js) on a previous visit. -->
   <script>
     (function () {
       try {
         var stored = localStorage.getItem('tfcg-theme');
-        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        var theme = stored || 'dark'; /* Dark is the site's default theme regardless of OS preference — only an explicit stored choice overrides it. */
         if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) { /* localStorage/matchMedia unavailable — default dark theme applies */ }
     })();
@@ -21,13 +20,13 @@
   <meta name="description" content="The Faith Centre Global (TFCG) is a Word of Faith, Prophetic, and Apostolic Church in Okota, Lagos, Nigeria, led by Pastor Godspower Opara Martins. Join us in person or online.">
   <meta name="keywords" content="Word of Faith church Lagos, Prophetic church Lagos, Apostolic church Okota, Christian church Ago Palace Way, TFCG">
   <meta name="author" content="The Faith Centre Global">
-  <link rel="canonical" href="https://tfcglobal.org/index.html">
+  <link rel="canonical" href="https://www.thefaithcentreglobal.org/index.html">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="The Faith Centre Global | Word of Faith, Prophetic &amp; Apostolic Church">
   <meta property="og:description" content="A Word of Faith, Prophetic, and Apostolic Church in Lagos, Nigeria, raising kingdom champions under Pastor Godspower Opara Martins.">
   <meta property="og:image" content="public/opengraph.jpg">
-  <meta property="og:url" content="https://tfcglobal.org/index.html">
+  <meta property="og:url" content="https://www.thefaithcentreglobal.org/index.html">
   <meta property="og:site_name" content="The Faith Centre Global">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Faith Centre Global">
@@ -60,8 +59,8 @@
     "@context": "https://schema.org",
     "@type": "Church",
     "name": "The Faith Centre Global",
-    "url": "https://tfcglobal.org/",
-    "logo": "https://tfcglobal.org/images/tfcg_logo.png",
+    "url": "https://www.thefaithcentreglobal.org/",
+    "logo": "https://www.thefaithcentreglobal.org/images/tfcg_logo.png",
     "founder": { "@type": "Person", "name": "Pastor Godspower Opara Martins" },
     "address": {
       "@type": "PostalAddress",
@@ -204,11 +203,30 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <div class="ratio ratio-16x9 iframe-card">
-            <!-- Embed source is set by js/render.js from config/livestream.json -->
-            <iframe id="home-livestream-iframe" src="" title="The Faith Centre Global live stream" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
+          <div class="ratio ratio-16x9 iframe-card" id="home-livestream-embed">
+            <!-- Filled in by js/render.js from config/livestream.json — a
+                 click-to-play facade (or live embed once tapped). -->
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark-3">
+    <div class="container" data-aos="fade-up">
+      <div class="text-center mb-4">
+        <h2 class="section-title mb-2">Watch Previous Messages</h2>
+        <p class="text-secondary">Missed a service? Catch up on our most recent messages.</p>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="ratio ratio-16x9 iframe-card" id="home-livestream-replay-embed">
+            <!-- Filled in by js/render.js from config/livestream.json -->
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="livestream.html" class="btn btn-outline-gold">Watch Live &amp; Full Schedule</a>
       </div>
     </div>
   </section>

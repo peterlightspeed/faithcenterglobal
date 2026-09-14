@@ -144,6 +144,31 @@ pointed at a playlist instead of the live channel.
 
 ---
 
+## 8. Click-to-Play (Why You See a "Tap to Watch" Poster First)
+
+Both the live player and the "Watch Previous Messages" player now show a
+poster image with a play button first, instead of loading the YouTube
+embed immediately. Tapping it loads the real video.
+
+**Why:** YouTube's channel-based live embed shows its own plain "Video
+unavailable" error screen whenever the channel isn't live at that exact
+moment — which used to appear automatically for every visitor, making
+the page look broken rather than simply offline. Requiring a tap avoids
+ever showing that screen unprompted, and also makes video playback
+(including autoplay) start reliably, since a real tap is a genuine user
+action every browser allows — unlike a video trying to autoplay on its
+own, which phones and modern browsers often block anyway.
+
+The `"autoplay"` field in `config/livestream.json` is no longer used for
+this reason (a click already starts playback immediately) — it's kept
+in the file for now but has no effect. It's safe to ignore.
+
+**The homepage now also has its own "Watch Previous Messages" player**,
+in addition to the Live Stream page — both pull from the same
+`channelId`, so there's nothing extra to configure.
+
+---
+
 ## Quick Reference
 
 | I want to... | What to do |
