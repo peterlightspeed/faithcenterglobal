@@ -4,6 +4,10 @@
   Frontend-only assistant backed by a local JSON knowledge base
   (js/church-data.json). Matches visitor questions against a
   keyword-tagged FAQ list and surfaces the church's own content.
+  Includes a periodic "attention" wiggle animation on the toggle
+  button (capped at a few plays per visit, off once opened, and
+  disabled for prefers-reduced-motion) to help first-time visitors
+  notice it.
 
   TODO: To upgrade this assistant with a real AI backend, replace
   the matchAnswer() function below with a call to your API of
@@ -97,6 +101,10 @@
     if (!page || !linkText) return;
     const link = document.createElement('a');
     link.href = page;
+    if (/^https?:\/\//i.test(page)) {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
     link.className = 'quick-reply-btn';
     link.style.display = 'inline-block';
     link.style.marginTop = '0.5rem';
@@ -149,7 +157,43 @@
 
     let initialized = false;
 
+    /* Attention animation: a gentle wiggle every so often to help
+       first-time visitors notice the widget, without nagging anyone who
+       already knows it's there. Stops for good the moment the visitor
+       opens the panel, and is capped at a few plays per page load. */
+    const ATTENTION_INTERVAL_MS = 14000;
+    const ATTENTION_MAX_PLAYS = 3;
+    let attentionPlays = 0;
+    let attentionTimer = null;
+
+    function playAttention() {
+      if (panel.classList.contains('open')) return;
+      toggle.classList.add('attention');
+      toggle.addEventListener('animationend', function onEnd() {
+        toggle.classList.remove('attention');
+        toggle.removeEventListener('animationend', onEnd);
+      });
+      attentionPlays += 1;
+      if (attentionPlays >= ATTENTION_MAX_PLAYS) {
+        clearInterval(attentionTimer);
+      }
+    }
+
+    function startAttentionLoop() {
+      attentionTimer = setInterval(playAttention, ATTENTION_INTERVAL_MS);
+    }
+
+    function stopAttentionLoop() {
+      clearInterval(attentionTimer);
+      toggle.classList.remove('attention');
+    }
+
+    if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      startAttentionLoop();
+    }
+
     function openPanel() {
+      stopAttentionLoop();
       panel.classList.add('open');
       toggle.setAttribute('aria-expanded', 'true');
       if (!initialized) {

@@ -1557,6 +1557,28 @@ section {
   100% { box-shadow: 0 0 0 0 rgba(212, 160, 23, 0); }
 }
 
+/* Attention-grabbing wiggle, added/removed periodically by js/assistant.js
+   (never while the panel is open, and only a few times per visit — see
+   ATTENTION_MAX_PLAYS there) to help first-time visitors notice the chat
+   widget without being distracting for people who already know it's there. */
+.assistant-toggle.attention {
+  animation: assistant-attention 0.9s ease;
+}
+
+@keyframes assistant-attention {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  20% { transform: rotate(-12deg) scale(1.12); }
+  40% { transform: rotate(10deg) scale(1.12); }
+  60% { transform: rotate(-8deg) scale(1.08); }
+  80% { transform: rotate(4deg) scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assistant-toggle.attention {
+    animation: none;
+  }
+}
+
 .assistant-panel {
   position: fixed;
   bottom: calc(var(--float-base) + var(--wa-size) + var(--float-gap) + var(--scroll-size) + var(--float-gap) + env(safe-area-inset-bottom, 0px) + var(--install-banner-height));
@@ -1916,6 +1938,47 @@ section {
   font-size: 0.9rem;
   text-align: center;
   padding: 0 1.5rem;
+}
+
+/* Branded fallback used when no specific YouTube video ID is available
+   for a real thumbnail (see renderEmbedFacade() in js/render.js) — a
+   proper "cover card" built from the church's own logo instead of a
+   generic stock photo. */
+.video-facade-branded {
+  background: radial-gradient(circle at 50% 35%, #1a1f30 0%, #0a0d1a 75%);
+}
+
+.video-facade-branded::before {
+  background: none;
+}
+
+.video-facade-logo {
+  position: relative;
+  z-index: 1;
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 12px;
+  margin-bottom: -0.3rem;
+}
+
+.video-facade-yt {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.video-facade-yt .bi-youtube {
+  color: #ff0000;
+  font-size: 1.3rem;
 }
 
 /* ============================================================
@@ -2305,7 +2368,11 @@ section {
   z-index: 1040;
   background: rgba(13, 13, 13, 0.97);
   border-top: 1px solid rgba(212, 160, 23, 0.35);
-  backdrop-filter: blur(10px);
+  /* No backdrop-filter here on purpose: the background above is
+     already 97% opaque, so a blur added no visible effect for real
+     visitors — but this fixed element's blur was the reproducible
+     cause of a hazy/ghosted patch over the footer in scroll-stitched
+     screenshots (see AI_HANDOFF.md). Removing it is a no-downside fix. */
   padding: 0.9rem 1rem;
   animation: install-banner-rise 0.4s ease;
   transition: opacity 0.2s ease, visibility 0.2s ease;

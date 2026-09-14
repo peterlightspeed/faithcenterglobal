@@ -585,16 +585,38 @@
        - avoids loading a YouTube iframe (and its scripts) for
          visitors who don't end up watching
      A poster image + play button + label stand in until then. */
+  function getYoutubeThumbnail(videoId) {
+    return `https://i.ytimg.com/vi/${encodeURIComponent(videoId.trim())}/hqdefault.jpg`;
+  }
+
   function renderEmbedFacade(container, src, opts) {
     container.classList.add("ratio-16x9");
-    const posterStyle = opts.poster ? ` style="background-image:url('${escapeHtml(opts.poster)}')"` : "";
-    container.innerHTML = `
-      <button type="button" class="video-facade"${posterStyle} aria-label="Play: ${escapeHtml(opts.label)}">
-        ${opts.badge ? `<span class="video-facade-badge">${escapeHtml(opts.badge)}</span>` : ""}
-        <span class="video-facade-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
-        <span class="video-facade-caption">${escapeHtml(opts.caption || opts.label)}</span>
-      </button>
-    `;
+    if (opts.poster) {
+      container.classList.remove("video-facade-branded-wrap");
+      container.innerHTML = `
+        <button type="button" class="video-facade" style="background-image:url('${escapeHtml(opts.poster)}')" aria-label="Play: ${escapeHtml(opts.label)}">
+          ${opts.badge ? `<span class="video-facade-badge">${escapeHtml(opts.badge)}</span>` : ""}
+          <span class="video-facade-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
+          <span class="video-facade-caption">${escapeHtml(opts.caption || opts.label)}</span>
+        </button>
+      `;
+    } else {
+      /* No specific video ID configured to pull a real YouTube
+         thumbnail from (see config/livestream.json → posterVideoId /
+         replayPosterVideoId) — show a branded "YouTube cover" card
+         with the church's own logo instead of a generic stock photo,
+         so it still reads clearly as "this is our YouTube content"
+         rather than looking like an unrelated background image. */
+      container.innerHTML = `
+        <button type="button" class="video-facade video-facade-branded" aria-label="Play: ${escapeHtml(opts.label)}">
+          ${opts.badge ? `<span class="video-facade-badge">${escapeHtml(opts.badge)}</span>` : ""}
+          <img src="images/tfcg_logo.png" alt="" class="video-facade-logo" aria-hidden="true">
+          <span class="video-facade-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
+          <span class="video-facade-yt"><i class="bi bi-youtube" aria-hidden="true"></i> YouTube</span>
+          <span class="video-facade-caption">${escapeHtml(opts.caption || opts.label)}</span>
+        </button>
+      `;
+    }
     container.querySelector(".video-facade").addEventListener("click", function () {
       const sep = src.includes("?") ? "&" : "?";
       container.innerHTML = `<iframe src="${src}${sep}autoplay=1" title="${escapeHtml(opts.label)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>`;
@@ -624,11 +646,22 @@
 
     if (config) {
       const src = getLivestreamEmbedSrc(config);
+      /* Prefer a REAL YouTube thumbnail wherever we actually have a
+         specific video ID to fetch one from — either because
+         embedMode is "video" (we already know the exact video), or
+         because the admin has set config.posterVideoId to any decent
+         representative video from the channel. i.ytimg.com thumbnails
+         are public and need no API key. Without a specific ID (the
+         normal "whatever's live on the channel" case) there's no way
+         to know the exact thumbnail without the YouTube Data API, so
+         it falls back to the branded card in renderEmbedFacade(). */
+      const livePosterId = config.embedMode === "video" && config.videoId ? config.videoId : config.posterVideoId;
+      const livePoster = livePosterId ? getYoutubeThumbnail(livePosterId) : null;
       mainContainers.forEach((container) => {
         if (src) {
           renderEmbedFacade(container, src, {
             label: "The Faith Centre Global live stream",
-            poster: "images/hero-bg.jpg",
+            poster: livePoster,
             badge: "LIVE",
             caption: "Tap to watch — plays instantly if we're live right now"
           });
@@ -646,11 +679,12 @@
       });
 
       const replaySrc = getUploadsPlaylistSrc(config);
+      const replayPoster = config.replayPosterVideoId ? getYoutubeThumbnail(config.replayPosterVideoId) : null;
       replayContainers.forEach((container) => {
         if (replaySrc) {
           renderEmbedFacade(container, replaySrc, {
             label: "Previous messages from The Faith Centre Global",
-            poster: "images/congregation.jpg",
+            poster: replayPoster,
             caption: "Tap to watch our most recent messages"
           });
         } else {

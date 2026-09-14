@@ -4,5 +4,7 @@
   "channelId": "UCjxlXbR47Gg304KQH-uYFsQ",
   "embedMode": "channel",
   "videoId": "",
-  "autoplay": false
+  "autoplay": false,
+  "posterVideoId": "",
+  "replayPosterVideoId": ""
 }

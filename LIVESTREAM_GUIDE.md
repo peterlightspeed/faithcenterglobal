@@ -167,6 +167,28 @@ in the file for now but has no effect. It's safe to ignore.
 in addition to the Live Stream page — both pull from the same
 `channelId`, so there's nothing extra to configure.
 
+### Using a real YouTube thumbnail as the cover
+
+By default, the poster shown before someone taps play is a branded
+card (the church logo on a dark background) — because the channel-live
+and "previous messages" embeds don't point at one specific video, so
+there's no single thumbnail to reliably fetch without the paid/keyed
+YouTube Data API.
+
+If you'd rather show an actual YouTube video thumbnail, set one or
+both of these optional fields in `config/livestream.json`:
+
+```json
+"posterVideoId": "VIDEO_ID_FOR_LIVE_COVER",
+"replayPosterVideoId": "VIDEO_ID_FOR_REPLAY_COVER"
+```
+
+Get a `VIDEO_ID` from any of the channel's video URLs — the part after
+`watch?v=`, e.g. `https://www.youtube.com/watch?v=VIDEO_ID`. A good
+choice for `replayPosterVideoId` is simply the most recent
+upload — swap it whenever a new message goes up, if you want the
+cover to always match what's actually playing.
+
 ---
 
 ## Quick Reference

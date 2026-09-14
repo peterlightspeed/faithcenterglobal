@@ -52,6 +52,12 @@
     "channel": "TfcglobalTV",
     "note": "Services are streamed live every Sunday and Wednesday. If the stream shows offline, check the service schedule."
   },
+  "creator": {
+    "name": "Peter Eluwade",
+    "alias": "Peter Lightspeed",
+    "role": "Backend Developer & AI Engineer, founder of PLSTech",
+    "portfolio": "https://peterlightspeed.github.io/portfolio"
+  },
   "pages": {
     "home": "index.html",
     "about": "about.html",
@@ -68,7 +74,7 @@
   "faq": [
     {
       "keywords": ["service", "time", "when", "sunday", "wednesday", "worship time"],
-      "answer": "Our service times are Sunday First Service at 8:00 AM, Sunday Second Service at 10:30 AM, and Wednesday Bible Study at 6:00 PM, all in West Africa Time.",
+      "answer": "Our main Sunday services are First Service (8:00 AM \u2013 9:30 AM) and Second Service (9:30 AM \u2013 11:30 AM), both West Africa Time. We also have Moment of Grace on Tuesday, Prayer Foyer and Midweek Service on Wednesday, and Breakthrough Service every third Sunday.",
       "page": "livestream.html",
       "linkText": "View Live Stream"
     },
@@ -103,16 +109,34 @@
       "linkText": "Visit Media Centre"
     },
     {
-      "keywords": ["appointment", "appointments", "book a meeting", "counseling", "counselling", "deliverance", "marriage counseling", "family counseling", "baby dedication", "meet with pastor", "meet the pastor"],
-      "answer": "You can request an appointment with our pastoral team for counseling, prayer, deliverance, marriage or family counseling, baby dedication, or a general enquiry.",
+      "keywords": ["appointment", "appointments", "book a meeting", "counseling", "counselling", "deliverance", "marriage counseling", "family counseling", "baby dedication", "meet with pastor", "meet the pastor", "schedule", "how long", "confirm", "urgent"],
+      "answer": "You can request an appointment with our pastoral team for counseling, prayer, deliverance, marriage or family counseling, baby dedication, or a general enquiry. Submitting a request doesn't guarantee your exact date/time \u2014 our team confirms availability with you directly, usually within 48 hours. If it's urgent, use the \"Chat on WhatsApp\" button on the Appointments page instead of waiting.",
       "page": "appointments.html",
       "linkText": "Book an Appointment"
     },
     {
-      "keywords": ["live", "livestream", "stream", "watch online", "youtube"],
-      "answer": "You can watch our services live on YouTube. If we are not currently broadcasting, you can watch recent messages on demand.",
+      "keywords": ["live", "livestream", "stream", "watch online", "youtube", "watch live", "watch service"],
+      "answer": "You can watch our services live on the Home page or the Live Stream page \u2014 tap the player to start it. We stream on YouTube, so if we're not currently broadcasting you'll see a friendly offline message instead of the live player.",
       "page": "livestream.html",
       "linkText": "Watch Live"
+    },
+    {
+      "keywords": ["stream not working", "stream isn't working", "video unavailable", "stream broken", "stream issue", "livestream issue", "livestream not working", "can't watch", "cannot watch", "player not loading", "stream down", "not streaming"],
+      "answer": "If tapping play shows \"Video unavailable,\" that almost always means we simply aren't live at that moment rather than something being broken \u2014 our services are streamed live only during scheduled service times. Try the \"Watch Previous Messages\" player instead to catch up, or check our Service Schedule for when we go live next.",
+      "page": "livestream.html",
+      "linkText": "Check Service Schedule"
+    },
+    {
+      "keywords": ["previous message", "previous messages", "replay", "replays", "missed service", "missed the service", "past service", "on demand", "catch up", "recording", "recordings"],
+      "answer": "Yes \u2014 both the Home page and the Live Stream page have a \"Watch Previous Messages\" player with our most recent uploads, so you can catch up any time, not just during live services.",
+      "page": "livestream.html",
+      "linkText": "Watch Previous Messages"
+    },
+    {
+      "keywords": ["who built", "who made", "who created", "who developed", "developer", "who built you", "who made you", "who built this", "who made this website", "who designed this", "creator", "built by", "website developer", "who coded", "who programmed"],
+      "answer": "I was built by Peter Eluwade \u2014 also known as Peter Lightspeed \u2014 The Faith Centre Global's most skilled web developer, a backend & AI engineer based in Lagos, Nigeria and the founder of PLSTech. He built this entire website (and me!) from scratch. Check out more of his work on his portfolio.",
+      "page": "https://peterlightspeed.github.io/portfolio",
+      "linkText": "View Developer's Portfolio"
     },
     {
       "keywords": ["prayer", "pray for me", "prayer request", "intercession"],
